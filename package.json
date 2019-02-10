@@ -1,0 +1,29 @@
+{
+  "name": "budget",
+  "version": "1.0.0",
+  "description": "A simple budgetting app to get your finances on track",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/js"
+  },
+  "keywords": [
+    "budget",
+    "finances"
+  ],
+  "author": "Jessy Anglehart-Nunes",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "knex": "^0.16.3",
+    "morgan": "~1.9.0",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.13.0"
+  }
+}
