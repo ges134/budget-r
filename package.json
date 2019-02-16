@@ -1,5 +1,5 @@
 {
-  "name": "budget",
+  "name": "budget-be",
   "version": "1.0.0",
   "description": "A simple budgetting app to get your finances on track",
   "main": "index.js",
@@ -14,16 +14,26 @@
   "author": "Jessy Anglehart-Nunes",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "^4.16.4",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "knex": "^0.16.3",
     "morgan": "~1.9.0",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "typescript": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^5.13.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ges134/budget-r.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ges134/budget-r/issues"
+  },
+  "homepage": "https://github.com/ges134/budget-r#readme"
 }
