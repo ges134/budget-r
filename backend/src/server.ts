@@ -1,12 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { config } from './config';
+import KnexAdapter from './dal/knexAdapter';
+
+KnexAdapter.setUp();
 
 const app = express();
 
 // Parsing all request bodies into json.
 app.use(bodyParser.json());
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
 const PORT = config.port;
 
