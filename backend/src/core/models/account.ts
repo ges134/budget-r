@@ -5,4 +5,5 @@ export default class Account implements Id {
   initialAmount: number;
   accountName: string;
   userID: number;
+  static tableName: string = 'account';
 }

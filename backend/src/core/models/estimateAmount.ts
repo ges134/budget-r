@@ -5,4 +5,5 @@ export default class EstimateAmount implements Id {
   effectiveMonth: Date;
   amount: number;
   estimateID: number;
+  static tableName: string = 'estimateAmount';
 }

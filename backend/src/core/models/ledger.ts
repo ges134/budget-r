@@ -5,4 +5,5 @@ export default class Ledger implements Id {
   name: string;
   parentLedgerID: number;
   budgetID: number;
+  static tableName: string = 'ledger';
 }
