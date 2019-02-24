@@ -1,9 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { config } from './config';
-import KnexAdapter from './dal/knexAdapter';
+import KnexWrapper from "./core/dal/KnexWrapper";
+import Repository from "./core/dal/Repository";
+import Account from "./core/models/account";
 
-KnexAdapter.setUp();
+KnexWrapper.getInstance();
 
 const app = express();
 
@@ -14,7 +16,11 @@ app.set('view engine', 'pug');
 const PORT = config.port;
 
 app.get('/', (req, res) => {
-  res.render('index');
+  const repo = new Repository<Account>(Account.tableName);
+  const result = repo.find(1).then(result => {
+    console.log(result);
+    res.render('index');
+ });
 });
 
 app.listen(PORT, () => {

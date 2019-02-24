@@ -7,4 +7,5 @@ export default class Transaction implements Id {
   description: string;
   accountID: number;
   ledgerID: number;
+  static tableName: string = 'transaction';
 }
