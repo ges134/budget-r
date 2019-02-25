@@ -8,7 +8,8 @@
     "start": "npm run server",
     "server": "nodemon dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon dist/server.js --inspect"
+    "debug": "nodemon dist/server.js --inspect",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "",
   "license": "ISC",

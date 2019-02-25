@@ -4,6 +4,7 @@ node_js:
   - "7"
 script:
   - cd backend
+  - npm run lint
   - npm test
   - cd ../frontend
   - npm test
