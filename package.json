@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "^5.13.0",
+    "ts-node": "^8.0.2",
     "typescript": "^3.3.3333"
   },
   "repository": {
