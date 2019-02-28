@@ -1,6 +1,6 @@
+import Knex, { QueryBuilder } from "knex";
 import Id from "../models/Id";
 import IRepository from "./IRepository";
-import Knex, { QueryBuilder } from "knex";
 import KnexWrapper from "./KnexWrapper";
 
 export enum orderBy {
@@ -8,7 +8,7 @@ export enum orderBy {
   asc = 'asc',
 }
 
-export interface order {
+export interface IOrder {
   col : string;
   orderBy : orderBy;
 }
@@ -20,23 +20,23 @@ export default class Repository<T extends Id> implements IRepository<T> {
     this.db = KnexWrapper.getInstance().knex(tableName);
   }
 
-  async find(id : number) : Promise<T> {
-    return await this.db.where({id,}).first();
+  public async find(id : number) : Promise<T> {
+    return this.db.where({id,}).first();
   }
 
-  async get(filter: any, order: orderBy, orderColumn: string) : Promise<T[]> {
-    return await this.db.where(filter).orderBy(orderColumn, order);
+  public async get(filter: any, order: IOrder) : Promise<T[]> {
+    return this.db.where(filter).orderBy(order.col, order.orderBy);
   }
 
-  add(entity : T) : void {
+  public add(entity : T) : void {
     this.db.insert(entity);
   }
 
-  delete(id : number) : void {
+  public delete(id : number) : void {
     this.db.where({id,}).del();
   }
 
-  update(entity : T) : void {
+  public update(entity : T) : void {
     this.db.where(entity.id).update(entity);
   }
 }

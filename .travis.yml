@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "iojs"
+  - "11"
   - "7"
 install:
   - cd backend
@@ -13,4 +13,5 @@ script:
   - npm run lint
   - npm test
   - cd ../frontend
+  - npm run lint
   - npm test
