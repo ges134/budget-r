@@ -1,9 +1,9 @@
 import Id from './Id';
 
 export default class Account implements Id {
-  id: number;
-  initialAmount: number;
-  accountName: string;
-  userID: number;
-  static tableName: string = 'account';
+  public static tableName: string = 'account';
+  public id: number;
+  public initialAmount: number;
+  public accountName: string;
+  public userID: number;
 }

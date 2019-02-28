@@ -1,9 +1,9 @@
 import Id from './Id';
 
 export default class EstimateAmount implements Id {
-  id: number;
-  effectiveMonth: Date;
-  amount: number;
-  estimateID: number;
-  static tableName: string = 'estimateAmount';
+  public static tableName: string = 'estimateAmount';
+  public id: number;
+  public effectiveMonth: Date;
+  public amount: number;
+  public estimateID: number;
 }

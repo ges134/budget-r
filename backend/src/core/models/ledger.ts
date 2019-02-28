@@ -1,9 +1,9 @@
 import Id from './Id'
 
 export default class Ledger implements Id {
-  id: number;
-  name: string;
-  parentLedgerID: number;
-  budgetID: number;
-  static tableName: string = 'ledger';
+  public static tableName: string = 'ledger';
+  public id: number;
+  public name: string;
+  public parentLedgerID: number;
+  public budgetID: number;
 }

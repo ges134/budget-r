@@ -1,5 +1,5 @@
-import express from "express";
 import bodyParser from "body-parser";
+import express from "express";
 import { config } from './config';
 import KnexWrapper from "./core/dal/KnexWrapper";
 import Repository from "./core/dal/Repository";
@@ -15,14 +15,13 @@ app.set('view engine', 'pug');
 
 const PORT = config.port;
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   const repo = new Repository<Account>(Account.tableName);
-  const result = repo.find(1).then(result => {
-    console.log(result);
-    res.render('index');
- });
+  const result = await repo.find(1)
+  res.render('index');
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+  // tslint:disable-next-line
+  console.log(`Server is listening on port ${PORT}`);
 });

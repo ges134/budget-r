@@ -1,8 +1,8 @@
 import Id from './Id'
 
 export default class Estimate implements Id {
-  id: number;
-  effectiveYear: Date;
-  ledgerID: number;
-  static tableName: string = 'estimate';
+  public static tableName: string = 'estimate';
+  public id: number;
+  public effectiveYear: Date;
+  public ledgerID: number;
 }

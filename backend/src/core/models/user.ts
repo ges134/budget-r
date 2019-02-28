@@ -1,8 +1,8 @@
 import Id from './Id';
 
 export default class User implements Id {
-  id: number;
-  username: string;
-  password: string;
-  static tableName: string = 'user';
+  public static tableName: string = 'user';
+  public id: number;
+  public username: string;
+  public password: string;
 }
