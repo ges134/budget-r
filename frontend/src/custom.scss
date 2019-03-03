@@ -1,0 +1,22 @@
+$bg: #4E5657;
+$main: #5EBD91;
+$main-light: lighten($main, 30%);
+$main-dark: lighten($main, 15%);
+$main-2: #60E2F0;
+$main-3: #C59496;
+$main-4: #F060AF;
+
+$dropdown-bg: $main-light;
+$dropdown-divider-bg: $bg;
+
+$navbar-light-color: $bg;
+$navbar-light-hover-color: $bg;
+$navbar-light-active-color: lighten($bg, 15%);
+
+$dropdown-link-hover-bg: $main-dark;
+
+$dark: $bg;
+$light: $main-light;
+$link-color: #FFF;
+
+@import "~bootstrap/scss/bootstrap.scss";
