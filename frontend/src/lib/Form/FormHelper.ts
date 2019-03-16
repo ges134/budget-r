@@ -36,8 +36,8 @@ export interface IValidInput {
 export class FormHelper {
   public static feedbackFromInputInformation(input : IInputInformation) : IFormFeedbackProps {
     return {
-      valid: input.valid,
       message: input.validationMessage,
+      valid: input.valid,
     }
   }
 
@@ -58,8 +58,8 @@ export class FormHelper {
    */
   public static reactstrapValidity(feedback : IFormFeedbackProps) : IValidInput {
     return {
-      valid: feedback.valid === Valid.valid,
       invalid: feedback.valid === Valid.invalid,
+      valid: feedback.valid === Valid.valid,
     };
   }
 }
