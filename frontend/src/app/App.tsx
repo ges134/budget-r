@@ -8,6 +8,7 @@ import Transactions from '../pages/Transactions/Transactions';
 import Accounts from '../pages/Accounts/Accounts';
 import Ledgers from '../pages/Ledgers/Ledgers';
 import NotFound from '../pages/NotFound/NotFound';
+import SignUp from '../pages/SignUp/SignUp';
 
 /**
  * Acts as a placeholder for a onepage app.
@@ -18,11 +19,12 @@ class App extends Component {
       <Fragment>
         <Layout>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact={true} path="/" component={Home} />
             <Route path="/budgets" component={Budgets} />
             <Route path="/transactions" component={Transactions} />
             <Route path="/accounts" component={Accounts} />
             <Route path="/ledgers" component={Ledgers} />
+            <Route path="/signup" component={SignUp} />
             <Route path="*" component={NotFound} />
           </Switch>
         </Layout>
