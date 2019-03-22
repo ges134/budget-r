@@ -24,8 +24,12 @@ export default class Repository<T extends Id> implements IRepository<T> {
     return this.db.where({id,}).first();
   }
 
-  public async get(filter: any, order: IOrder) : Promise<T[]> {
-    return this.db.where(filter).orderBy(order.col, order.orderBy);
+  public async get(filter?: any, order?: IOrder) : Promise<T[]> {
+    let query = this.db.where(filter || {});
+    if (order) {
+      query = query.orderBy(order.col, order.orderBy);
+    }
+    return query;
   }
 
   public add(entity : T) : void {

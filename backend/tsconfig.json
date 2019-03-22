@@ -10,11 +10,10 @@
     "outDir": "dist",
     "baseUrl": "./",
     "declaration": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ]
+    "experimentalDecorators": true,
+    "plugins": [{
+      "name": "typescript-tslint-plugin"
+    }]
   },
   "include": ["src/**/*"]
 }

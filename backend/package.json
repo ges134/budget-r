@@ -8,15 +8,21 @@
     "start": "npm run server",
     "server": "nodemon dist/server.js",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
+    "test:debug": "mocha --inspect-brk -r ts-node/register src/**/*.spec.ts",
     "debug": "nodemon dist/server.js --inspect",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/lodash": "^4.14.123",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
+    "class-validator": "^0.9.1",
     "express": "^4.16.4",
     "knex": "^0.16.3",
+    "lodash": "^4.17.11",
     "pg": "^7.8.0",
     "pug": "^2.0.3"
   },
@@ -32,6 +38,7 @@
     "ts-node": "^8.0.2",
     "tslint": "^5.13.0",
     "tslint-config-prettier": "^1.18.0",
+    "typemoq": "^2.1.0",
     "typescript": "^3.3.3",
     "typescript-tslint-plugin": "^0.3.1"
   }
