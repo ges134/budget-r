@@ -2,15 +2,19 @@ import React, { Component, MouseEventHandler } from 'react';
 import CardWrapper from '../../CardWrapper/CardWrapper';
 import { Form, Button } from 'reactstrap';
 import InputControl from '../../InputControl/InputControl';
-import { IInputInformation, Valid, FormHelper } from '../../../lib/Form/FormHelper';
+import {
+  IInputInformation,
+  Valid,
+  FormHelper
+} from '../../../lib/Form/FormHelper';
 import _cloneDeep from 'lodash/cloneDeep';
 
 interface ISignUpFormState {
-  username: IInputInformation,
-  email: IInputInformation,
-  password: IInputInformation,
-  passwordConfirm: IInputInformation,
-  [key: string] : IInputInformation,
+  username: IInputInformation;
+  email: IInputInformation;
+  password: IInputInformation;
+  passwordConfirm: IInputInformation;
+  [key: string]: IInputInformation;
 }
 
 export default class SignUpForm extends Component<any, ISignUpFormState> {
@@ -24,14 +28,14 @@ export default class SignUpForm extends Component<any, ISignUpFormState> {
     const emptyInputInformation = {
       valid,
       value,
-      validationMessage,
-    }
+      validationMessage
+    };
 
     this.state = {
       username: _cloneDeep(emptyInputInformation),
       email: _cloneDeep(emptyInputInformation),
       password: _cloneDeep(emptyInputInformation),
-      passwordConfirm: _cloneDeep(emptyInputInformation),
+      passwordConfirm: _cloneDeep(emptyInputInformation)
     };
   }
 
@@ -39,34 +43,42 @@ export default class SignUpForm extends Component<any, ISignUpFormState> {
     const input = this.state[name];
     input.value = value;
     this.setState({
-      [name]: input,
+      [name]: input
     });
-  }
+  };
 
   onPasswordConfirmChange = (value: string, name: string) => {
     const passwordMatches = this.state.password.value === value;
     const input = {
       valid: passwordMatches ? Valid.valid : Valid.invalid,
       value,
-      validationMessage: passwordMatches? '' : 'Passwords does not match',
+      validationMessage: passwordMatches ? '' : 'Passwords does not match'
     };
 
     this.setState({
-      [name]: input,
+      [name]: input
     });
-  }
+  };
 
   onSubmit = () => {
-    // TODO : Call the backend.
-  }
+    axios.post('');
+  };
 
   public render() {
-    const usernameFeedback = FormHelper.feedbackFromInputInformation(this.state.username);
-    const emailFeedback = FormHelper.feedbackFromInputInformation(this.state.email);
-    const passwordFeedback = FormHelper.feedbackFromInputInformation(this.state.password);
-    const passwordConfirmFeedback = FormHelper.feedbackFromInputInformation(this.state.passwordConfirm);
+    const usernameFeedback = FormHelper.feedbackFromInputInformation(
+      this.state.username
+    );
+    const emailFeedback = FormHelper.feedbackFromInputInformation(
+      this.state.email
+    );
+    const passwordFeedback = FormHelper.feedbackFromInputInformation(
+      this.state.password
+    );
+    const passwordConfirmFeedback = FormHelper.feedbackFromInputInformation(
+      this.state.passwordConfirm
+    );
 
-    return(
+    return (
       <Form>
         <CardWrapper header="Sign up">
           <InputControl
@@ -105,10 +117,7 @@ export default class SignUpForm extends Component<any, ISignUpFormState> {
             feedback={passwordConfirmFeedback}
             value={this.state.passwordConfirm.value}
           />
-          <Button 
-            color="primary"
-            onClick={this.onSubmit}
-          >
+          <Button color="primary" onClick={this.onSubmit}>
             Submit
           </Button>
         </CardWrapper>

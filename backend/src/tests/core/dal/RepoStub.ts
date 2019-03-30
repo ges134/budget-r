@@ -1,6 +1,6 @@
-import IRepository from 'src/core/dal/IRepository';
+import IRepository from '../../../core/dal/IRepository';
 import Id from '../../../core/models/Id';
-import { IOrder } from 'src/core/dal/Repository';
+import { IOrder } from '../../../core/dal/Repository';
 
 export class RepoStub<T extends Id> implements IRepository<T> {
   private db: T[];

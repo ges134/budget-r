@@ -1,4 +1,4 @@
-import { Signup as Presentation } from '../presentations/Signup';
+import { Signup as Presentation } from '../../../../models';
 import { Request } from 'express';
 import { User } from '../models/user';
 import IRepository from '../dal/IRepository';
@@ -13,15 +13,8 @@ export class Signup {
   }
 
   public presentationFromRequest(req: Request): Presentation {
-    const presentation = new Presentation();
-    const { body } = req;
-
-    presentation.email = body.email;
-    presentation.password = body.password;
-    presentation.passwordConfirm = body.passwordConfirm;
-    presentation.username = body.username;
-
-    return presentation;
+    const { email, password, passwordConfirm, username } = req.body;
+    return new Presentation(email, password, passwordConfirm, email);
   }
 
   public userFromPresentation(presentation: Presentation): User {

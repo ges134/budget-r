@@ -1,9 +1,9 @@
+import { Signup as Presentation } from '../../../../../models';
 import { expect } from 'chai';
 import 'mocha';
 import { Signup } from '../../../core/services/Signup';
 import { User as Model } from '../../../core/models/user';
 import IRepository from '../../../core/dal/IRepository';
-import { Signup as Presentation } from '../../../core/presentations/Signup';
 import { RepoStub } from '../dal/RepoStub';
 
 describe('Sign up service', () => {
@@ -20,11 +20,7 @@ describe('Sign up service', () => {
     repo = new RepoStub();
     sut = new Signup(repo);
 
-    presentation = new Presentation();
-    presentation.email = email;
-    presentation.password = password;
-    presentation.passwordConfirm = passwordConfirm;
-    presentation.username = username;
+    presentation = new Presentation(email, password, passwordConfirm, username);
   });
 
   it('should be able to create a user from presentation', () => {
