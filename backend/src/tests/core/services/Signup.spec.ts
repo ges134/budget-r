@@ -38,7 +38,7 @@ describe('Sign up service', () => {
     const user = await sut.createNewUser(presentation);
 
     // Assert
-    expect(repo.find(1)).to.not.be.undefined;
+    expect(repo.find(1)).to.not.be.undefined; //tslint:disable-line
     expect(user.password).to.not.equal(password);
   });
 });
