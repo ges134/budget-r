@@ -1,15 +1,18 @@
 language: node_js
 node_js:
-  - "11"
-  - "7"
+  - '11'
 install:
-  - cd backend
+  - cd models
+  - npm install
+  - cd ../backend
   - npm install
   - cd ../frontend
   - npm install
   - cd ..
 script:
-  - cd backend
+  - cd models
+  - npm run lint
+  - cd ../backend
   - npm run lint
   - npm test
   - cd ../frontend

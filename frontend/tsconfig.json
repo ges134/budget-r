@@ -18,13 +18,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ]
+    "plugins": [{
+      "name": "typescript-tslint-plugin"
+    }]
   },
   "include": [
     "src"
-  ]
+  ],
+  "references": [{
+    "path": "../models"
+  }]
 }

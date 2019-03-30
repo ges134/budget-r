@@ -15,8 +15,5 @@
       "name": "typescript-tslint-plugin"
     }]
   },
-  "include": ["src/**/*"],
-  "references": [{
-    "path": "../models"
-  }]
+  "include": ["src/**/*"]
 }

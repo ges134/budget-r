@@ -4,6 +4,7 @@ import { config } from './config';
 import KnexWrapper from "./core/dal/KnexWrapper";
 import Repository from "./core/dal/Repository";
 import Account from "./core/models/account";
+import { apiRouter } from "./routes";
 
 KnexWrapper.getInstance();
 
@@ -15,11 +16,7 @@ app.set('view engine', 'pug');
 
 const PORT = config.port;
 
-app.get('/', async (req, res) => {
-  const repo = new Repository<Account>(Account.tableName);
-  const result = await repo.find(1)
-  res.render('index');
-});
+app.use('/api', apiRouter());
 
 app.listen(PORT, () => {
   // tslint:disable-next-line
