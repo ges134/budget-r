@@ -1,6 +1,9 @@
 import React, { Component, FormEvent } from 'react';
 import { FormGroup, Label, Input, Col, FormText } from 'reactstrap';
-import InputFeedback, { IFormFeedbackProps } from '../InputFeedback/InputFeedback';
+import { Signup as Presentation } from '../../../models';
+import InputFeedback, {
+  IFormFeedbackProps
+} from '../InputFeedback/InputFeedback';
 import { FormHelper } from '../../lib/Form/FormHelper';
 
 /**
@@ -9,19 +12,19 @@ import { FormHelper } from '../../lib/Form/FormHelper';
  */
 type InputType = 'email' | 'password' | 'text';
 
-interface IInputControlProps {
-  labelText: string,
-  name: string,
-  inputType: InputType,
-  placeholder: string,
-  feedback: IFormFeedbackProps,
-  helperText?: string,
-  onChange: (value: string, name: string) => void,
-  value: string,
-};
+interface IProps {
+  labelText: string;
+  name: string;
+  inputType: InputType;
+  placeholder: string;
+  feedback: IFormFeedbackProps;
+  helperText?: string;
+  onChange: (value: string, name: string) => void;
+  value: string;
+}
 
-export default class InputControl extends Component<IInputControlProps, any> {
-  constructor(props: IInputControlProps) {
+export default class InputControl extends Component<IProps, any> {
+  constructor(props: IProps) {
     super(props);
   }
 
@@ -29,13 +32,14 @@ export default class InputControl extends Component<IInputControlProps, any> {
     const { value, name } = e.currentTarget;
 
     this.props.onChange(value, name);
-  }
+  };
 
   public render() {
     const { feedback } = this.props;
     const { valid, invalid } = FormHelper.reactstrapValidity(feedback);
+    const emptyPresentation = new Presentation('', '', '', '');
 
-    return(
+    return (
       <FormGroup row={true}>
         <Label for={this.props.name} md={2}>
           {this.props.labelText}
