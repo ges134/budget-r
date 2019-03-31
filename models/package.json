@@ -1,5 +1,5 @@
 {
-  "name": "models",
+  "name": "budget-r-models",
   "version": "1.0.0",
   "description": "model representation for budget-r",
   "main": "src/index.ts",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "prettier": "^1.16.4",
+    "ts-node": "^8.0.3",
     "tslint": "^5.14.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.1",

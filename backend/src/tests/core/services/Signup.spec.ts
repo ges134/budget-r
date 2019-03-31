@@ -1,4 +1,4 @@
-import { Signup as Presentation } from '../../../../../models';
+import { Signup as Presentation } from 'budget-r-models';
 import { expect } from 'chai';
 import 'mocha';
 import { Signup } from '../../../core/services/Signup';
@@ -20,7 +20,7 @@ describe('Sign up service', () => {
     repo = new RepoStub();
     sut = new Signup(repo);
 
-    presentation = new Presentation(email, password, passwordConfirm, username);
+    presentation = new Presentation(username, password, passwordConfirm, email);
   });
 
   it('should be able to create a user from presentation', () => {

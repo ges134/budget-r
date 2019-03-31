@@ -3,18 +3,21 @@ node_js:
   - '11'
 install:
   - cd models
-  - npm install
+  - yarn install
+  - yarn link
   - cd ../backend
-  - npm install
+  - yarn install
+  - yarn link budget-r-models
   - cd ../frontend
-  - npm install
+  - yarn install
+  - yarn link budget-r-models
   - cd ..
 script:
   - cd models
-  - npm run lint
+  - yarn run lint
   - cd ../backend
-  - npm run lint
-  - npm test
+  - yarn run lint
+  - yarn test
   - cd ../frontend
-  - npm run lint
-  - npm test
+  - yarn run lint
+  - yarn test
