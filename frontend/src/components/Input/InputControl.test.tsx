@@ -1,22 +1,16 @@
 import React from 'react';
-import InputControl from './InputControl';
+import { InputControl } from './InputControl';
 import BaseCase from '../../lib/Tests/BaseCase';
 import { mount, shallow } from 'enzyme';
-import { Valid } from '../../lib/Form/FormHelper';
-import { IFormFeedbackProps } from '../InputFeedback/InputFeedback';
 
-let resultName = '';
-let resultValue = '';
-
-let labelText : string;
-let placeholder : string;
-let helperText : string;
-let onChange = jest.fn();
-let feedback: IFormFeedbackProps;
+let labelText: string;
+let placeholder: string;
+let helperText: string;
+const onChange = jest.fn();
 const name = 'TestInput';
 
 const getComponent = () => (
-  <InputControl 
+  <InputControl
     labelText={labelText}
     name={name}
     inputType="text"
@@ -24,23 +18,18 @@ const getComponent = () => (
     helperText={helperText}
     onChange={onChange}
     value=""
-    feedback={feedback}
   />
 );
 
 describe('InputControl', () => {
   beforeEach(() => {
-    const labelAndPlaceholder = "Some text"
+    const labelAndPlaceholder = 'Some text';
     labelText = labelAndPlaceholder;
     placeholder = labelAndPlaceholder;
-    feedback= {
-      valid: Valid.invariant,
-      message: '',
-    }
   });
 
   it('should run basic tests', () => {
-    BaseCase.run(getComponent())
+    BaseCase.run(getComponent());
   });
 
   it('should render an helper text if the property is specified', () => {
@@ -55,11 +44,7 @@ describe('InputControl', () => {
   });
 
   it('should show errors if errors are present', () => {
-    // Arrange
-    feedback = {
-      valid: Valid.invalid,
-      message: 'an error message',
-    };
+    // FIXME: Errors
 
     // Act
     const rendered = mount(getComponent());
@@ -75,7 +60,10 @@ describe('InputControl', () => {
     const rendered = mount(getComponent());
 
     // Act
-    rendered.find('input').first().simulate('change', { target: { value: textToFill } });
+    rendered
+      .find('input')
+      .first()
+      .simulate('change', { target: { value: textToFill } });
 
     // Assert
     expect(onChange).toHaveBeenCalled();

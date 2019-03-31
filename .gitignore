@@ -88,3 +88,5 @@ typings/
 
 backend/dist/*
 */knexConfig.ts
+
+*.orig

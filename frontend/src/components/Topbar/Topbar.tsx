@@ -11,14 +11,12 @@ import {
   UncontrolledDropdown
 } from 'reactstrap';
 
-interface ItopbarProps {}
-
 interface ItopbarState {
-  isOpen: boolean,
+  isOpen: boolean;
 }
 
-export default class Layout extends Component<ItopbarProps, ItopbarState> {
-  constructor(props: ItopbarProps) {
+export default class Layout extends Component<any, ItopbarState> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -29,9 +27,9 @@ export default class Layout extends Component<ItopbarProps, ItopbarState> {
   public toggle = () => {
     const { isOpen } = this.state;
     this.setState({
-      isOpen: !isOpen,
+      isOpen: !isOpen
     });
-  }
+  };
 
   public render = () => {
     return (
@@ -46,13 +44,9 @@ export default class Layout extends Component<ItopbarProps, ItopbarState> {
                   Jessy Anglehart-Nunes
                 </DropdownToggle>
                 <DropdownMenu right={true}>
-                  <DropdownItem>
-                    My account
-                  </DropdownItem>
+                  <DropdownItem>My account</DropdownItem>
                   <DropdownItem divider={true} />
-                  <DropdownItem>
-                    Logout
-                  </DropdownItem>
+                  <DropdownItem>Logout</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
@@ -60,5 +54,5 @@ export default class Layout extends Component<ItopbarProps, ItopbarState> {
         </Navbar>
       </Fragment>
     );
-  }
+  };
 }
