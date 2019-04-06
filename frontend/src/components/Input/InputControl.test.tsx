@@ -1,71 +1,44 @@
 import React from 'react';
 import { InputControl } from './InputControl';
 import BaseCase from '../../lib/Tests/BaseCase';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
-let labelText: string;
-let placeholder: string;
-let helperText: string;
-const onChange = jest.fn();
-const name = 'TestInput';
+const field = {
+  name: 'name',
+  type: 'text'
+};
 
-const getComponent = () => (
-  <InputControl
-    labelText={labelText}
-    name={name}
-    inputType="text"
-    placeholder={placeholder}
-    helperText={helperText}
-    onChange={onChange}
-    value=""
-  />
-);
+const touched: { [key: string]: boolean } = {};
+const errors: { [key: string]: string } = {};
+
+let form: any = {};
+
+const getComponent = () => <InputControl form={form} field={field} />;
 
 describe('InputControl', () => {
   beforeEach(() => {
-    const labelAndPlaceholder = 'Some text';
-    labelText = labelAndPlaceholder;
-    placeholder = labelAndPlaceholder;
+    touched[field.name] = false;
+    errors[field.name] = '';
+
+    form = {
+      touched,
+      errors
+    };
   });
 
   it('should run basic tests', () => {
     BaseCase.run(getComponent());
   });
 
-  it('should render an helper text if the property is specified', () => {
-    // Arrange
-    helperText = 'An helper text';
-
-    // Act
-    const renderd = shallow(getComponent());
-
-    // Assert
-    expect(renderd.find('FormText').length).toBe(1);
-  });
-
   it('should show errors if errors are present', () => {
-    // FIXME: Errors
-
-    // Act
-    const rendered = mount(getComponent());
-
-    // Assert
-    expect(rendered.find('.invalid-feedback').length).toBe(1);
-    expect(rendered.find('.is-invalid').length).toBe(1);
-  });
-
-  it('should call onChange of child component', () => {
     // Arrange
-    const textToFill = 'An user input';
-    const rendered = mount(getComponent());
+    form.touched[field.name] = true;
+    form.errors[field.name] = 'an error message';
 
     // Act
-    rendered
-      .find('input')
-      .first()
-      .simulate('change', { target: { value: textToFill } });
+    const rendered = shallow(getComponent());
 
     // Assert
-    expect(onChange).toHaveBeenCalled();
+    expect(rendered.find('FormFeedback').length).toBe(1);
   });
 });
