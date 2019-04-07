@@ -12,9 +12,9 @@ install:
   - yarn install
   - cd ..
 script:
-  - cd ../models
+  - cd models
   - yarn run lint
-  - cd tasks
+  - cd ../tasks
   - yarn run lint
   - gulp models
   - cd ../backend
