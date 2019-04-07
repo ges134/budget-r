@@ -2,7 +2,7 @@ import React, { Component, MouseEventHandler } from 'react';
 import { CardWrapper } from '../../components/CardWrapper';
 import { Form, Button } from 'reactstrap';
 import { FormikInput } from '../../components/Input';
-import { Signup as Presentation } from 'budget-r-models';
+import { Signup as Presentation } from '../../lib/models';
 import { Formik } from 'formik';
 import axios from 'axios';
 import { IAsyncForm } from '../../lib/Form/IAsyncForm';

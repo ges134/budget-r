@@ -20,7 +20,6 @@
     "@types/yup": "^0.26.12",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
-    "budget-r-models": "^1.0.0",
     "formik": "^1.5.1",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",

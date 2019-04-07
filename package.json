@@ -22,7 +22,8 @@
   "workspaces": [
     "frontend",
     "backend",
-    "models"
+    "models",
+    "tasks"
   ],
   "private": true
 }

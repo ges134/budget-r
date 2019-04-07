@@ -86,7 +86,16 @@ typings/
 
 # End of https://www.gitignore.io/api/node
 
+# compiled folders
 backend/dist/*
+frontend/dist/*
+
+# Knex configuration. It should be created when setting up the project
 */knexConfig.ts
 
+# conflict files
 *.orig
+
+# Gulp managed files
+frontend/src/lib/models
+backend/src/models-folder
