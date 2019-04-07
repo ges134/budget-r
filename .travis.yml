@@ -2,19 +2,21 @@ language: node_js
 node_js:
   - '11'
 install:
-  - cd models
+  - cd tasks
   - yarn install
-  - yarn link
+  - cd ../models
+  - yarn install
   - cd ../backend
   - yarn install
-  - yarn link budget-r-models
   - cd ../frontend
   - yarn install
-  - yarn link budget-r-models
   - cd ..
 script:
-  - cd models
+  - cd ../models
   - yarn run lint
+  - cd tasks
+  - yarn run lint
+  - gulp models
   - cd ../backend
   - yarn run lint
   - yarn test

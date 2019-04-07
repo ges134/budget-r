@@ -1,0 +1,17 @@
+{
+  "name": "budget-r-tasks",
+  "version": "1.0.0",
+  "description": "Everytasks required to help the developpement of Budget-R",
+  "main": "index.js",
+  "author": "Jessy Anglehart-Nunes",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "del": "^4.1.0",
+    "eslint": "^5.16.0",
+    "gulp": "^4.0.0"
+  },
+  "scripts": {
+    "lint": "eslint ./*.js"
+  }
+}

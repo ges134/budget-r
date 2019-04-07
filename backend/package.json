@@ -20,7 +20,6 @@
     "@types/yup": "^0.26.12",
     "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
-    "budget-r-models": "^1.0.0",
     "class-validator": "^0.9.1",
     "express": "^4.16.4",
     "knex": "^0.16.3",

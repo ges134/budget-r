@@ -1,4 +1,4 @@
-import { Signup as Presentation } from 'budget-r-models';
+import { Signup as Presentation } from '../../../models-folder';
 import { expect } from 'chai';
 import 'mocha';
 import { Signup } from '../../../core/services/Signup';
