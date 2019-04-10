@@ -1,4 +1,4 @@
-import { Signup as Presentation } from '../../../../models';
+import { Signup as Presentation } from '../../models-folder/presentations';
 import { Request } from 'express';
 import { User } from '../models/user';
 import IRepository from '../dal/IRepository';
