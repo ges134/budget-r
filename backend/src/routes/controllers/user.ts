@@ -1,5 +1,3 @@
-// tslint:disable-next-line: no-implicit-dependencies
-import { Signup as Presentation } from '../../../../models';
 import { Signup as Service } from '../../core/services/Signup';
 import Repository from '../../core/dal/Repository';
 import { User as Model } from '../../core/models/user';

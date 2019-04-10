@@ -18,8 +18,10 @@ script:
   - yarn run lint
   - gulp models
   - cd ../backend
+  - yarn run ci:build
   - yarn run lint
   - yarn test
   - cd ../frontend
+  - yarn build
   - yarn run lint
   - yarn test

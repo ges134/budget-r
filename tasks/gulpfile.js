@@ -1,7 +1,4 @@
-const {
-  src,
-  dest
-} = require('gulp');
+const { src, dest } = require('gulp');
 const del = require('del');
 
 const modelsPath = '../models/lib';
@@ -10,14 +7,14 @@ const backendPath = '../backend/src/models-folder';
 
 const baseCopy = () => src(`${modelsPath}/**/*`);
 
-function models(cb) {
+async function models(cb) {
   console.log('deleting models in frontend folder');
-  del(`${frontendPath}/**`, {
+  await del(`${frontendPath}/**`, {
     force: true
   });
 
   console.log('deleting models in backend folder');
-  del(`${backendPath}/**`, {
+  await del(`${backendPath}/**`, {
     force: true
   });
 

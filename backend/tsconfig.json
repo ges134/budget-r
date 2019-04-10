@@ -11,9 +11,11 @@
     "baseUrl": "./",
     "declaration": true,
     "experimentalDecorators": true,
-    "plugins": [{
-      "name": "typescript-tslint-plugin"
-    }]
-  },
-  "include": ["src/**/*"]
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin"
+      }
+    ],
+    "types": ["mocha"]
+  }
 }
