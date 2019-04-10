@@ -24,8 +24,5 @@
   },
   "include": [
     "src"
-  ],
-  "references": [{
-    "path": "../models"
-  }]
+  ]
 }
