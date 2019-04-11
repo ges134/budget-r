@@ -17,7 +17,7 @@ export class RepoStub<T extends Id> implements IRepository<T> {
     throw new Error('not implemented');
   }
 
-  public add(entity: T): void {
+  public async add(entity: T): Promise<any> {
     entity.id = this.db.length + 1;
     this.db.push(entity);
   }

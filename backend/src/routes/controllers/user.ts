@@ -27,10 +27,6 @@ export default class User {
         { abortEarly: false }
       );
 
-      if (validated.password !== validated.passwordConfirm) {
-        throw new ValidationError('Passwords does not matchs', validated, '');
-      }
-
       service.createNewUser(validated);
       res.status(200).send('success!');
     } catch (error) {

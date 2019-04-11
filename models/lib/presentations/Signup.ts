@@ -1,5 +1,5 @@
 import { IPresentation } from '../helpers';
-import { ObjectSchema, object, string } from 'yup';
+import { ObjectSchema, object, string, ref } from 'yup';
 
 export class Signup implements IPresentation {
   public validationSchema: ObjectSchema<any> = object().shape({
@@ -15,6 +15,7 @@ export class Signup implements IPresentation {
       .required('A password is required'),
     passwordConfirm: string()
       .max(72, 'The password confirmation must be 250 characters')
+      .oneOf([ref('password'), null], 'Passwords must match')
       .required('A password confirmation is required')
   });
 
