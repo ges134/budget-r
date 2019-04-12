@@ -3,11 +3,12 @@ import { CardWrapper } from '../../components/CardWrapper';
 import { Form, Button } from 'reactstrap';
 import { FormikInput } from '../../components/Input';
 import { Signup as Presentation } from '../../lib/models';
-import { Formik } from 'formik';
+import { Formik, FormikActions } from 'formik';
 import axios from 'axios';
 import { IAsyncForm } from '../../lib/Form/IAsyncForm';
 import { Redirect } from 'react-router';
 import { FormikFormWrapper } from '../../components/Forms';
+import { AxiosWrapper } from '../../lib/axios/AxiosWrapper';
 
 export default class SignUpForm extends Component<any, IAsyncForm> {
   constructor(props: any) {
@@ -15,23 +16,25 @@ export default class SignUpForm extends Component<any, IAsyncForm> {
 
     this.state = {
       isSubmitting: false,
-      hasSucceeded: false
+      hasSucceeded: false,
+      errors: []
     };
   }
 
-  public onSubmit = () => {
-    axios
-      .post('')
+  public onSubmit = (values: any, actions: FormikActions<any>) => {
+    AxiosWrapper.getInstance()
+      .post('/signup', values)
       .then(() => {
+        actions.setSubmitting(false);
         this.setState({
           isSubmitting: false,
           hasSucceeded: true
         });
       })
       .catch(err => {
-        // FIXME: actually handle the error.
         this.setState({
-          isSubmitting: false
+          isSubmitting: false,
+          errors: err
         });
       });
 
@@ -48,7 +51,8 @@ export default class SignUpForm extends Component<any, IAsyncForm> {
         initialValues={presentation}
         validationSchema={presentation.validationSchema}
         onSubmit={this.onSubmit}
-        submitText="Create new account"
+        submitText="Create account"
+        isSubmitting={this.state.isSubmitting}
       >
         <CardWrapper header="Sign up">
           <FormikInput name="username" label="Username" type="text" />
