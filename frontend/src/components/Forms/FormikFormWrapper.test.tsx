@@ -3,7 +3,7 @@ import { FormikFormWrapper } from './FormikFormWrapper';
 import BaseCase from '../../lib/Tests/BaseCase';
 import { FormikInput } from '../Input';
 import { object } from 'yup';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 let shouldRedirect: boolean;
 const onSubmit = () => {};
@@ -11,6 +11,7 @@ const name = 'name';
 const label = 'The input label';
 const type = 'text';
 let helper: string;
+let isSubmitting: boolean;
 
 const getComponent = (withInput?: boolean) => (
   <FormikFormWrapper
@@ -19,6 +20,7 @@ const getComponent = (withInput?: boolean) => (
     validationSchema={object().shape({})}
     onSubmit={onSubmit}
     submitText="Submit"
+    isSubmitting={isSubmitting}
   >
     {withInput ? (
       <FormikInput name={name} label={label} type={type} helper={helper} />
@@ -31,10 +33,22 @@ const getComponent = (withInput?: boolean) => (
 describe('FormikFormWrapper', () => {
   beforeEach(() => {
     shouldRedirect = false;
+    isSubmitting = false;
   });
 
   it('should run basic tests', () => {
     BaseCase.run(getComponent());
+  });
+
+  it('should disable button if form is submitting', () => {
+    // Arrange
+    isSubmitting = true;
+
+    // Act
+    const rendered = shallow(getComponent());
+
+    // Assert
+    expect(rendered.find('Button').prop('disabled')).toBeTruthy();
   });
 
   describe('With FormikInput', () => {

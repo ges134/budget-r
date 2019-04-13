@@ -1,10 +1,9 @@
-import bodyParser from "body-parser";
-import express from "express";
+import bodyParser from 'body-parser';
+import express from 'express';
 import { config } from './config';
-import KnexWrapper from "./core/dal/KnexWrapper";
-import Repository from "./core/dal/Repository";
-import Account from "./core/models/account";
-import { apiRouter } from "./routes";
+import KnexWrapper from './core/dal/KnexWrapper';
+import { apiRouter } from './routes';
+import cors from 'cors';
 
 KnexWrapper.getInstance();
 
@@ -12,7 +11,7 @@ const app = express();
 
 // Parsing all request bodies into json.
 app.use(bodyParser.json());
-app.set('view engine', 'pug');
+app.use(cors());
 
 const PORT = config.port;
 
