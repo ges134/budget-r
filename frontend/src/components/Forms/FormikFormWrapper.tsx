@@ -1,7 +1,7 @@
 import { Redirect } from 'react-router';
-import { Formik, FormikActions } from 'formik';
+import { Formik, FormikActions, Form } from 'formik';
 import { ObjectSchema } from 'yup';
-import { Form, Button, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import React, { ReactNode, Component, FormEvent } from 'react';
 import { GlobalErrors } from './GlobalErrors';
 
@@ -37,9 +37,9 @@ export class FormikFormWrapper extends Component<IProps, any> {
       <Formik
         initialValues={this.props.initialValues}
         validationSchema={this.props.validationSchema}
-        onSubmit={this.onSubmit}
+        onSubmit={this.props.onSubmit}
       >
-        <Form onSubmit={this.onSubmit}>
+        <Form>
           {this.props.children}
           <Row>
             <Col md={9}>
