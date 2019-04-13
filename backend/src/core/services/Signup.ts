@@ -14,7 +14,7 @@ export class Signup {
 
   public presentationFromRequest(req: Request): Presentation {
     const { email, password, passwordConfirm, username } = req.body;
-    return new Presentation(email, password, passwordConfirm, email);
+    return new Presentation(username, password, passwordConfirm, email);
   }
 
   public userFromPresentation(presentation: Presentation): User {

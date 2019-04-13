@@ -14,14 +14,17 @@ export class AxiosWrapper {
   }
 
   private static instance: AxiosWrapper;
+
+  private config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  };
+
   private constructor() {}
 
-  public post(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): AxiosPromise<any> {
-    return axios.post(`${this.url()}${url}`, data, config);
+  public put(url: string, data?: any): AxiosPromise<any> {
+    return axios.put(`${this.url()}${url}`, data, this.config);
   }
 
   /**

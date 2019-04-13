@@ -1,12 +1,9 @@
-import React, { Component, MouseEventHandler } from 'react';
+import React, { Component } from 'react';
 import { CardWrapper } from '../../components/CardWrapper';
-import { Form, Button } from 'reactstrap';
 import { FormikInput } from '../../components/Input';
 import { Signup as Presentation } from '../../lib/models';
-import { Formik, FormikActions } from 'formik';
-import axios from 'axios';
+import { FormikActions } from 'formik';
 import { IAsyncForm } from '../../lib/Form/IAsyncForm';
-import { Redirect } from 'react-router';
 import { FormikFormWrapper } from '../../components/Forms';
 import { AxiosWrapper } from '../../lib/axios/AxiosWrapper';
 
@@ -23,7 +20,7 @@ export default class SignUpForm extends Component<any, IAsyncForm> {
 
   public onSubmit = (values: any, actions: FormikActions<any>) => {
     AxiosWrapper.getInstance()
-      .post('/signup', values)
+      .put('/signup', values)
       .then(() => {
         actions.setSubmitting(false);
         this.setState({

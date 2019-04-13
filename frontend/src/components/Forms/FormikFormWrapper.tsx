@@ -22,14 +22,6 @@ export class FormikFormWrapper extends Component<IProps, any> {
     super(props);
   }
 
-  public onFormikSubmit = (values: any, actions: FormikActions<any>) => {
-    console.log('sup');
-  };
-
-  public onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   public render() {
     return this.props.redirectLink && this.props.shouldRedirect ? (
       <Redirect to={this.props.redirectLink} push />
@@ -46,7 +38,11 @@ export class FormikFormWrapper extends Component<IProps, any> {
               <GlobalErrors errors={this.props.errors} />
             </Col>
             <Col md={3}>
-              <Button color="primary" disabled={this.props.isSubmitting}>
+              <Button
+                color="primary"
+                disabled={this.props.isSubmitting}
+                type="submit"
+              >
                 {this.props.submitText}
               </Button>
             </Col>
