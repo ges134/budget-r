@@ -90,11 +90,9 @@ typings/
 backend/dist/*
 frontend/dist/*
 
-# Knex configuration. It should be created when setting up the project
-*/knexConfig.ts
-
-# JWT configuration. It should be created when setting up the project
-*/jwtConfig.ts
+# Knex and JWT configuration. It should be created when setting up the project
+backend/src/config/knexConfig.ts
+backend/src/config/jwtConfig.ts
 
 # conflict files
 *.orig
