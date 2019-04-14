@@ -1,4 +1,4 @@
-import IRepository from '../../../core/dal/IRepository';
+import { IRepository } from '../../../core/dal';
 import Id from '../../../core/models/Id';
 import { IOrder } from '../../../core/dal/Repository';
 
