@@ -93,6 +93,9 @@ frontend/dist/*
 # Knex configuration. It should be created when setting up the project
 */knexConfig.ts
 
+# JWT configuration. It should be created when setting up the project
+*/jwtConfig.ts
+
 # conflict files
 *.orig
 
