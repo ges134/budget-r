@@ -11,10 +11,10 @@ export class Signup implements IPresentation {
       .max(250, 'the password must be under 250 characters')
       .required('An email is required'),
     password: string()
-      .max(72, 'The password must be under 250 characters')
+      .max(72, 'The password must be under 72 characters')
       .required('A password is required'),
     passwordConfirm: string()
-      .max(72, 'The password confirmation must be 250 characters')
+      .max(72, 'The password confirmation must be 72 characters')
       .oneOf([ref('password'), null], 'Passwords must match')
       .required('A password confirmation is required')
   });

@@ -1,6 +1,6 @@
-import Knex, { QueryBuilder } from 'knex';
+import { QueryBuilder } from 'knex';
 import Id from '../models/Id';
-import IRepository from './IRepository';
+import { IRepository } from './IRepository';
 import KnexWrapper from './KnexWrapper';
 
 export enum orderBy {
@@ -13,7 +13,7 @@ export interface IOrder {
   orderBy: orderBy;
 }
 
-export default class Repository<T extends Id> implements IRepository<T> {
+export class Repository<T extends Id> implements IRepository<T> {
   private db: QueryBuilder;
 
   constructor(tableName: string) {
