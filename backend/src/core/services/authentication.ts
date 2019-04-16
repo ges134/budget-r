@@ -17,21 +17,23 @@ export class Authentication {
     const { identifier, password } = presentation;
 
     let user = (await this.repo.get({ username: identifier }))[0];
-    if (user) {
+    if (!user) {
       user = (await this.repo.get({ email: identifier }))[0];
       if (!user) {
-        throw new NotFoundError('The user does not exist.');
+        throw new NotFoundError();
       }
     }
 
     const isValid = compareSync(password, user.password);
 
     if (isValid) {
-      return sign({ identifier }, jwtConfig.secret, { expiresIn: '1h' });
-    } else {
-      throw new BadRequestError(
-        'The username/email and passwords does not match'
+      return sign(
+        { username: user.username },
+        jwtConfig.secret,
+        jwtConfig.options
       );
+    } else {
+      throw new BadRequestError();
     }
   }
 }
