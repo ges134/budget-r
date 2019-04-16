@@ -1,8 +1,7 @@
 import { Signup as Presentation } from '../../models-folder/presentations';
 import { Request } from 'express';
 import { User } from '../models/user';
-import IRepository from '../dal/IRepository';
-import Repository from '../dal/Repository';
+import { IRepository, Repository } from '../dal';
 import { hash } from 'bcrypt';
 
 export class Signup {

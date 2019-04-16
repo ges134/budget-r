@@ -1,11 +1,11 @@
 import knex from 'knex';
-import KnexConfig from '../../config/knexConfig';
+import { knexConfig } from '../../config';
 
 export default class KnexAdapter {
   public static setUp = () =>
     knex({
       client: 'pg',
-      connection: KnexConfig,
+      connection: knexConfig,
       pool: { min: 0, max: 7 }
     });
 }

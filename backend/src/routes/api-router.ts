@@ -1,5 +1,6 @@
 import express from 'express';
 import User from './controllers/user';
+import { Login } from './controllers';
 
 /**
  * This is the manager for the routers of the main server.
@@ -26,7 +27,10 @@ export function apiRouter(): express.Router {
                                 .delete(removeRecipe(recipesCollection));*/
 
   // Got to return the router for it to be used later on.
+  const login = new Login();
 
   router.route('/signup').put(User.getInstance().put);
+  router.route('./login').post(login.post);
+
   return router;
 }

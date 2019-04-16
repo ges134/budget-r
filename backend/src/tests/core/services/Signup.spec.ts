@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import 'mocha';
 import { Signup } from '../../../core/services/Signup';
 import { User as Model } from '../../../core/models/user';
-import IRepository from '../../../core/dal/IRepository';
+import { IRepository } from '../../../core/dal';
 import { RepoStub } from '../dal/RepoStub';
 
 describe('Sign up service', () => {

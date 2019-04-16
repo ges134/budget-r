@@ -1,4 +1,4 @@
-import IRepository from '../../../core/dal/IRepository';
+import { IRepository } from '../../../core/dal';
 import Id from '../../../core/models/Id';
 import { IOrder } from '../../../core/dal/Repository';
 
@@ -14,7 +14,7 @@ export class RepoStub<T extends Id> implements IRepository<T> {
   }
 
   public async get(filter: any, order: IOrder): Promise<T[]> {
-    throw new Error('not implemented');
+    return this.db;
   }
 
   public async add(entity: T): Promise<any> {
@@ -23,7 +23,7 @@ export class RepoStub<T extends Id> implements IRepository<T> {
   }
 
   public delete(id: number): void {
-    throw new Error('not implementd');
+    this.db.splice(id);
   }
 
   public update(entity: T): void {

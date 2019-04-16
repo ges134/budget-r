@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import { config } from './config';
+import { serverConfig } from './config';
 import KnexWrapper from './core/dal/KnexWrapper';
 import { apiRouter } from './routes';
 import cors from 'cors';
@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const PORT = config.port;
+const PORT = serverConfig.port;
 
 app.use('/api', apiRouter());
 
