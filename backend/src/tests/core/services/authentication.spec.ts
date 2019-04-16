@@ -63,6 +63,6 @@ describe('Authentication service', () => {
 
     // Assert
     const verified = verify(result, jwtConfig.secret);
-    expect(verified).to.not.be.undefined;
+    expect(verified).to.not.be.undefined; //tslint:disable-line
   });
 });
