@@ -51,6 +51,9 @@ async function ciFakeConfig(cb) {
 
   const JwtTemplate = `export const jwtConfig = {
   secret: '${fakeSecret}'
+  options: {
+    expiresIn: '1h'
+  }
   };`;
 
   console.log('creating the fake files');
