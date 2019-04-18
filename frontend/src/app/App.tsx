@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Layout from '../components/Layout/Layout';
-import Routes from './Routes';
-import {Route, Link, Switch} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import Budgets from '../pages/Budgets/Budgets';
 import Transactions from '../pages/Transactions/Transactions';
