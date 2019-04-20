@@ -16,6 +16,7 @@ interface IProps {
   errors?: string[];
   submitUrl: string;
   verb?: verbs;
+  onSuccess?: (res: any) => void;
 }
 
 export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
@@ -34,8 +35,13 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
 
     AxiosWrapper.getInstance()
       .request(verb, this.props.submitUrl, values)
-      .then(() => {
+      .then(res => {
         actions.setSubmitting(false);
+
+        if (this.props.onSuccess) {
+          this.props.onSuccess(res.data);
+        }
+
         this.setState({
           isSubmitting: false,
           hasSucceeded: true
