@@ -1,6 +1,7 @@
 import express from 'express';
 import User from './controllers/user';
 import { Login } from './controllers';
+import { Factory } from '../core/services';
 
 /**
  * This is the manager for the routers of the main server.
@@ -30,7 +31,7 @@ export function apiRouter(): express.Router {
   const login = new Login();
 
   router.route('/signup').put(User.getInstance().put);
-  router.route('./login').post(login.post);
+  router.route('/login').post(login.post);
 
   return router;
 }
