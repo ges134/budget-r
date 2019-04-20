@@ -1,16 +1,20 @@
-import { faBook,
+import {
+  faBook,
   faCashRegister,
   faFileInvoiceDollar,
-  faPiggyBank } from '@fortawesome/free-solid-svg-icons';
+  faPiggyBank
+} from '@fortawesome/free-solid-svg-icons';
 import React, { Component } from 'react';
 import { Nav } from 'reactstrap';
 import SidebarItem from '../SidebarItem/SidebarItem';
 
+import './Sidebar.scss';
+
 export default class Sidebar extends Component {
   public render() {
     return (
-      <div className="bg-dark sticky-top flex-grow-1">
-        <Nav vertical={true} className="flex-sm-column">
+      <div className="bg-dark sidebar-sticky">
+        <Nav vertical={true} className="flex-column">
           <SidebarItem link="/budgets" icon={faFileInvoiceDollar}>
             Budgets
           </SidebarItem>
