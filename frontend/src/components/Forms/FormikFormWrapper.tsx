@@ -2,7 +2,7 @@ import { Redirect } from 'react-router';
 import { Formik, FormikActions, Form } from 'formik';
 import { ObjectSchema } from 'yup';
 import { Button, Row, Col } from 'reactstrap';
-import React, { ReactNode, Component } from 'react';
+import React, { ReactNode, Component, Fragment } from 'react';
 import { GlobalErrors } from './GlobalErrors';
 import { AxiosWrapper, verbs } from '../../lib/axios/AxiosWrapper';
 import { IAsyncForm } from '../../lib/Form';
@@ -51,6 +51,34 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
     this.setState({ isSubmitting: true });
   };
 
+  public bottomRow = () => {
+    const button = (
+      <Button color="primary" disabled={this.state.isSubmitting} type="submit">
+        {this.props.submitText}
+      </Button>
+    );
+
+    const rowNoErrors = (
+      <Col md={{ size: 3, offset: 9 }} className="text-right">
+        {button}
+      </Col>
+    );
+    const rowErrors = (
+      <>
+        <Col md={9}>
+          <GlobalErrors errors={this.state.errors} />
+        </Col>
+        <Col md={3} className="text-right">
+          {button}
+        </Col>
+      </>
+    );
+
+    const hasErrors: boolean = this.state.errors.length !== 0;
+
+    return <Row>{hasErrors ? rowErrors : rowNoErrors}</Row>;
+  };
+
   public render() {
     return this.props.redirectLink && this.state.hasSucceeded ? (
       <Redirect to={this.props.redirectLink} push />
@@ -62,20 +90,7 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
       >
         <Form>
           {this.props.children}
-          <Row>
-            <Col md={9}>
-              <GlobalErrors errors={this.state.errors} />
-            </Col>
-            <Col md={3}>
-              <Button
-                color="primary"
-                disabled={this.state.isSubmitting}
-                type="submit"
-              >
-                {this.props.submitText}
-              </Button>
-            </Col>
-          </Row>
+          {this.bottomRow()}
         </Form>
       </Formik>
     );

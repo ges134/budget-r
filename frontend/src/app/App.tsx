@@ -8,6 +8,7 @@ import Accounts from '../pages/Accounts/Accounts';
 import Ledgers from '../pages/Ledgers/Ledgers';
 import NotFound from '../pages/NotFound/NotFound';
 import SignUp from '../pages/SignUp/SignUp';
+import { Login } from '../pages/Login/Login';
 
 /**
  * Acts as a placeholder for a onepage app.
@@ -24,6 +25,7 @@ class App extends Component {
             <Route path="/accounts" component={Accounts} />
             <Route path="/ledgers" component={Ledgers} />
             <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={Login} />
             <Route path="*" component={NotFound} />
           </Switch>
         </Layout>
