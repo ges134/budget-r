@@ -4,11 +4,11 @@ import { FormikInput } from '../../components/Input';
 import { Login as Presentation } from '../../lib/models';
 import { FormikFormWrapper } from '../../components/Forms';
 import Cookies from 'js-cookie';
+import { cookieName } from '../../lib/constants';
 
 export class LoginForm extends Component {
   public onLoginSuccess = (token: string) => {
-    Cookies.set('budget-r-token', token);
-    console.log(Cookies.get('budget-r-token'));
+    Cookies.set(cookieName, token);
   };
 
   public render() {

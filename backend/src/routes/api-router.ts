@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { RequestHandler, Request, Response } from 'express';
 import User from './controllers/user';
 import { Login } from './controllers';
-import { Factory } from '../core/services';
+import { verify } from 'jsonwebtoken';
+import { jwtConfig } from '../config';
 
 /**
  * This is the manager for the routers of the main server.
@@ -30,8 +31,35 @@ export function apiRouter(): express.Router {
   // Got to return the router for it to be used later on.
   const login = new Login();
 
-  router.route('/signup').put(User.getInstance().put);
+  router
+    .route('/signup')
+    .put(User.getInstance().put)
+    .get(User.getInstance().get);
   router.route('/login').post(login.post);
 
   return router;
 }
+
+export const checkToken = (req: Request, res: Response, next: any) => {
+  let token = req.headers.authorization;
+  if (token.startsWith('Bearer ')) {
+    // Remove Bearer from string
+    token = token.slice(7, token.length);
+  }
+
+  if (token) {
+    verify(token, jwtConfig.secret, (err: Error, decoded: any) => {
+      if (err) {
+        return res.status(401).send('Token is not valid');
+      } else {
+        req.headers.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    return res.json({
+      success: false,
+      message: 'Auth token is not supplied'
+    });
+  }
+};

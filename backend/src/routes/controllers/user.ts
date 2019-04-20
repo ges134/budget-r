@@ -34,4 +34,8 @@ export default class User {
       }
     }
   }
+
+  public async get(req: Request, res: Response) {
+    const service = Factory.getInstance().user();
+  }
 }
