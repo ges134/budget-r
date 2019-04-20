@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import SignUpForm from '../../forms/SignUp/SignUpForm';
+import React, { Fragment } from 'react';
+import { SignUpForm } from '../../forms';
 
 const SignUp = () => (
   <Fragment>
