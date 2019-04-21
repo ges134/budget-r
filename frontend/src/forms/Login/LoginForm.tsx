@@ -9,6 +9,7 @@ import { cookieName } from '../../lib/constants';
 export class LoginForm extends Component {
   public onLoginSuccess = (token: string) => {
     Cookies.set(cookieName, token);
+    window.location.replace('/');
   };
 
   public render() {
