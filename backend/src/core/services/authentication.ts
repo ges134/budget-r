@@ -10,6 +10,12 @@ import { compareSync } from 'bcrypt';
 import { sign, verify, decode } from 'jsonwebtoken';
 import { jwtConfig } from '../../config';
 
+export interface IToken {
+  username: string;
+  iat: number;
+  exp: number;
+}
+
 export class Authentication {
   private repo: IRepository<User>;
 
@@ -48,8 +54,8 @@ export class Authentication {
     }
 
     if (token) {
-      const verified = verify(token, jwtConfig.secret);
-      const username = ''; // FIXME: How do I get this?
+      const verified = verify(token, jwtConfig.secret) as IToken;
+      const username = verified.username;
 
       const users = await this.repo.get({ username });
       const user = users[0];

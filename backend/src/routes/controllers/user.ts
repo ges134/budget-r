@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { ValidationError } from 'yup';
 import { isNullOrUndefined } from 'util';
 import { Factory } from '../../core/services/factory';
+import { User as Model } from '../../core/models/user';
+import { User as Presentation } from '../../models-folder';
 
 export default class User {
   public static getInstance(): User {
@@ -36,6 +38,18 @@ export default class User {
   }
 
   public async get(req: Request, res: Response) {
-    const service = Factory.getInstance().user();
+    try {
+      let { decoded } = req.headers;
+      if (Array.isArray(decoded)) {
+        decoded = decoded[0];
+      }
+
+      const { id, username } = JSON.parse(decoded) as Model;
+      const presentation = new Presentation(username, id);
+
+      res.status(200).send(presentation);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
   }
 }

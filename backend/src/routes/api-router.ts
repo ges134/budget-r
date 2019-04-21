@@ -3,6 +3,7 @@ import User from './controllers/user';
 import { Login } from './controllers';
 import { verify } from 'jsonwebtoken';
 import { jwtConfig } from '../config';
+import { Factory } from '../core/services';
 
 /**
  * This is the manager for the routers of the main server.
@@ -31,35 +32,25 @@ export function apiRouter(): express.Router {
   // Got to return the router for it to be used later on.
   const login = new Login();
 
-  router
-    .route('/signup')
-    .put(User.getInstance().put)
-    .get(User.getInstance().get);
+  router.route('/signup').put(User.getInstance().put);
   router.route('/login').post(login.post);
+  router.route('/user').get(checkToken, User.getInstance().get);
 
   return router;
 }
 
-export const checkToken = (req: Request, res: Response, next: any) => {
-  let token = req.headers.authorization;
-  if (token.startsWith('Bearer ')) {
-    // Remove Bearer from string
-    token = token.slice(7, token.length);
-  }
+export const checkToken = async (req: Request, res: Response, next: any) => {
+  const token = req.headers.authorization;
 
-  if (token) {
-    verify(token, jwtConfig.secret, (err: Error, decoded: any) => {
-      if (err) {
-        return res.status(401).send('Token is not valid');
-      } else {
-        req.headers.decoded = decoded;
-        next();
-      }
-    });
-  } else {
-    return res.json({
-      success: false,
-      message: 'Auth token is not supplied'
-    });
+  try {
+    const decoded = await Factory.getInstance()
+      .authentication()
+      .validateToken(token);
+
+    req.headers.decoded = JSON.stringify(decoded);
+
+    next();
+  } catch (error) {
+    res.status(401).send(error.message);
   }
 };
