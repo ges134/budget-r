@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Layout } from '../components/Layout/Layout';
 import { Route, Switch } from 'react-router-dom';
 import Home from '../pages/Home/Home';
-import Budgets from '../pages/Budgets/Budgets';
+import { Budgets } from '../pages';
 import Transactions from '../pages/Transactions/Transactions';
 import Accounts from '../pages/Accounts/Accounts';
 import Ledgers from '../pages/Ledgers/Ledgers';

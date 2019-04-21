@@ -1,10 +1,12 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
+import { NeedsAuthentication } from '../../components/needsAuthenticaton/NeedsAuthentication';
 
-const Budgets = () => (
-  <Fragment>
-    <div>Welcome to budget-R! the app is still being built and so is this page.</div>
+export const Budgets = () => (
+  <NeedsAuthentication>
+    <div>
+      Welcome to budget-R! the app is still being built and so is this page.
+    </div>
     <p>You're now on the soon to be budgets page.</p>
-  </Fragment>
+    <p>You shouldn't be on this page if you didn't login oupsies</p>
+  </NeedsAuthentication>
 );
-
-export default Budgets;
