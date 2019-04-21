@@ -25,12 +25,21 @@ export class App extends Component<any, IState> {
   constructor(props: any) {
     super(props);
 
+    let hasCookies = false;
+    const token = Cookies.get(cookieName);
+
+    if (token) {
+      hasCookies = token.length > 0;
+    }
+
     this.state = {
-      isFetchingUser: true,
+      isFetchingUser: hasCookies,
       username: ''
     };
 
-    this.fetchUser();
+    if (hasCookies) {
+      this.fetchUser();
+    }
   }
 
   public fetchUser = () => {
