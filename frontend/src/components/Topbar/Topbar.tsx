@@ -11,6 +11,8 @@ import {
   UncontrolledDropdown
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { cookieName } from '../../lib/constants';
+import Cookies from 'js-cookie';
 
 interface IProps {
   username?: string;
@@ -36,6 +38,11 @@ export class Topbar extends Component<IProps, IState> {
     });
   };
 
+  public logout = () => {
+    Cookies.remove(cookieName);
+    window.location.replace('/');
+  };
+
   public render = () => {
     const loggedIn = (
       <Collapse isOpen={this.state.isOpen} navbar>
@@ -47,7 +54,7 @@ export class Topbar extends Component<IProps, IState> {
             <DropdownMenu right>
               <DropdownItem>My account</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem>Logout</DropdownItem>
+              <DropdownItem onClick={this.logout}>Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
