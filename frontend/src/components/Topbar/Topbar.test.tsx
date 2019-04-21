@@ -37,6 +37,6 @@ describe('Topbar', () => {
     const rendered = mount(getComponent());
 
     // Assert
-    expect(rendered.find('a.dropdown-toggle.nav-link').length).toBe(1);
+    expect(rendered.find('a.dropdown-toggle.nav-link').length).toBe(2);
   });
 });

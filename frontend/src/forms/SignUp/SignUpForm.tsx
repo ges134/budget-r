@@ -9,7 +9,7 @@ export const SignUpForm = () => {
 
   return (
     <FormikFormWrapper
-      redirectLink="/"
+      redirectLink="/login"
       initialValues={presentation}
       validationSchema={presentation.validationSchema}
       submitText="Create account"

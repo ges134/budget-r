@@ -62,9 +62,14 @@ export class Topbar extends Component<IProps, IState> {
     );
 
     const noLoggedIn = (
-      <Link to="/login" className="nav-link">
-        Login
-      </Link>
+      <>
+        <Link to="/login" className="nav-link">
+          Login
+        </Link>
+        <Link to="/signup" className="nav-link">
+          Create an account
+        </Link>
+      </>
     );
 
     return (
