@@ -3,6 +3,8 @@ import { LoginForm } from '../../forms';
 
 export const Login = () => (
   <>
-    <LoginForm />
+    <div className="mx-5 px-5">
+      <LoginForm />
+    </div>
   </>
 );

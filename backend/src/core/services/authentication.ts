@@ -1,10 +1,20 @@
 import { Login as Presentation } from '../../models-folder/presentations';
 import { User } from '../models/user';
 import { IRepository, Repository } from '../dal';
-import { NotFoundError, BadRequestError } from '../../routes/errors';
+import {
+  NotFoundError,
+  BadRequestError,
+  UnauthorizedError
+} from '../../routes/errors';
 import { compareSync } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import { sign, verify, decode } from 'jsonwebtoken';
 import { jwtConfig } from '../../config';
+
+export interface IToken {
+  username: string;
+  iat: number;
+  exp: number;
+}
 
 export class Authentication {
   private repo: IRepository<User>;
@@ -34,6 +44,33 @@ export class Authentication {
       );
     } else {
       throw new BadRequestError();
+    }
+  }
+
+  public async validateToken(token: string): Promise<User> {
+    try {
+      if (token.startsWith('Bearer ')) {
+        // Remove Bearer from string
+        token = token.slice(7, token.length);
+      }
+
+      if (token) {
+        const verified = verify(token, jwtConfig.secret) as IToken;
+        const username = verified.username;
+
+        const users = await this.repo.get({ username });
+        const user = users[0];
+
+        if (user) {
+          return user;
+        } else {
+          throw new Error();
+        }
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      throw new UnauthorizedError();
     }
   }
 }

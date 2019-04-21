@@ -10,13 +10,18 @@ import {
   NavbarToggler,
   UncontrolledDropdown
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-interface ItopbarState {
+interface IProps {
+  username?: string;
+}
+
+interface IState {
   isOpen: boolean;
 }
 
-export default class Layout extends Component<any, ItopbarState> {
-  constructor(props: any) {
+export class Topbar extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props);
 
     this.state = {
@@ -32,25 +37,37 @@ export default class Layout extends Component<any, ItopbarState> {
   };
 
   public render = () => {
+    const loggedIn = (
+      <Collapse isOpen={this.state.isOpen} navbar>
+        <Nav className="ml-auto" navbar>
+          <UncontrolledDropdown nav inNavbar>
+            <DropdownToggle nav caret>
+              {this.props.username}
+            </DropdownToggle>
+            <DropdownMenu right>
+              <DropdownItem>My account</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>Logout</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </Nav>
+      </Collapse>
+    );
+
+    const noLoggedIn = (
+      <Link to="/login" className="nav-link">
+        Login
+      </Link>
+    );
+
     return (
       <Fragment>
-        <Navbar color="light" light={true} expand="md">
+        <Navbar color="light" light expand="md">
           <NavbarBrand href="/">Budget-R</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar={true}>
-            <Nav className="ml-auto" navbar={true}>
-              <UncontrolledDropdown nav={true} inNavbar={true}>
-                <DropdownToggle nav={true} caret={true}>
-                  Jessy Anglehart-Nunes
-                </DropdownToggle>
-                <DropdownMenu right={true}>
-                  <DropdownItem>My account</DropdownItem>
-                  <DropdownItem divider={true} />
-                  <DropdownItem>Logout</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-          </Collapse>
+          <Nav className="ml-auto" navbar>
+            <NavbarToggler onClick={this.toggle} />
+            {this.props.username ? loggedIn : noLoggedIn}
+          </Nav>
         </Navbar>
       </Fragment>
     );

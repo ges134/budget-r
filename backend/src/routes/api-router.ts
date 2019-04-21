@@ -1,6 +1,8 @@
-import express from 'express';
+import express, { RequestHandler, Request, Response } from 'express';
 import User from './controllers/user';
 import { Login } from './controllers';
+import { verify } from 'jsonwebtoken';
+import { jwtConfig } from '../config';
 import { Factory } from '../core/services';
 
 /**
@@ -32,6 +34,23 @@ export function apiRouter(): express.Router {
 
   router.route('/signup').put(User.getInstance().put);
   router.route('/login').post(login.post);
+  router.route('/user').get(checkToken, User.getInstance().get);
 
   return router;
 }
+
+export const checkToken = async (req: Request, res: Response, next: any) => {
+  const token = req.headers.authorization;
+
+  try {
+    const decoded = await Factory.getInstance()
+      .authentication()
+      .validateToken(token);
+
+    req.headers.decoded = JSON.stringify(decoded);
+
+    next();
+  } catch (error) {
+    res.status(401).send(error.message);
+  }
+};

@@ -1,5 +1,7 @@
 import { isNullOrUndefined } from 'util';
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { cookieName } from '../constants';
+import Cookies from 'js-cookie';
 
 export enum verbs {
   put = 'put',
@@ -36,17 +38,26 @@ export class AxiosWrapper {
         return this.post(url, data);
       case verbs.put:
         return this.put(url, data);
+      case verbs.get:
+        return this.get(url, data);
       default:
         throw Error('Verb is not supported yet');
     }
   }
 
   private put(url: string, data?: any): AxiosPromise<any> {
-    return axios.put(this.urlCombined(url), data, this.config);
+    return axios.put(this.urlCombined(url), data, this.configWithToken());
   }
 
   private post(url: string, data?: any): AxiosPromise<any> {
-    return axios.post(this.urlCombined(url), data, this.config);
+    return axios.post(this.urlCombined(url), data, this.configWithToken());
+  }
+
+  private get(url: string, data?: any): AxiosPromise<any> {
+    return axios.get(
+      `${this.urlCombined(url)}?${this.encodeData(data)}`,
+      this.configWithToken()
+    );
   }
 
   /**
@@ -58,5 +69,35 @@ export class AxiosWrapper {
 
   private urlCombined(path: string): string {
     return `${this.url()}${path}`;
+  }
+
+  private configWithToken(): any {
+    const { headers } = this.config;
+    const token = Cookies.get(cookieName);
+
+    return {
+      headers: {
+        ...headers,
+        Authorization: token
+      }
+    };
+  }
+
+  private encodeData(data?: any): string {
+    let encoded = '';
+    if (data) {
+      const props = [];
+      for (const prop in data) {
+        if (data.hasOwnProperty(prop)) {
+          props.push(
+            `${encodeURIComponent(prop)}=${encodeURIComponent(data[prop])}`
+          );
+        }
+      }
+
+      encoded = props.join('&');
+    }
+
+    return encoded;
   }
 }

@@ -2,9 +2,11 @@ import React, { Fragment } from 'react';
 import { SignUpForm } from '../../forms';
 
 const SignUp = () => (
-  <Fragment>
-    <SignUpForm />
-  </Fragment>
+  <>
+    <div className="px-5 mx-5">
+      <SignUpForm />
+    </div>
+  </>
 );
 
 export default SignUp;
