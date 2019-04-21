@@ -48,24 +48,28 @@ export class Authentication {
   }
 
   public async validateToken(token: string): Promise<User> {
-    if (token.startsWith('Bearer ')) {
-      // Remove Bearer from string
-      token = token.slice(7, token.length);
-    }
-
-    if (token) {
-      const verified = verify(token, jwtConfig.secret) as IToken;
-      const username = verified.username;
-
-      const users = await this.repo.get({ username });
-      const user = users[0];
-
-      if (user) {
-        return user;
-      } else {
-        throw new UnauthorizedError();
+    try {
+      if (token.startsWith('Bearer ')) {
+        // Remove Bearer from string
+        token = token.slice(7, token.length);
       }
-    } else {
+
+      if (token) {
+        const verified = verify(token, jwtConfig.secret) as IToken;
+        const username = verified.username;
+
+        const users = await this.repo.get({ username });
+        const user = users[0];
+
+        if (user) {
+          return user;
+        } else {
+          throw new Error();
+        }
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
       throw new UnauthorizedError();
     }
   }

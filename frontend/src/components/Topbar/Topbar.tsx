@@ -8,8 +8,7 @@ import {
   Navbar,
   NavbarBrand,
   NavbarToggler,
-  UncontrolledDropdown,
-  NavItem
+  UncontrolledDropdown
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 

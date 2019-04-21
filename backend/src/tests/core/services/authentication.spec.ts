@@ -5,8 +5,12 @@ import { Authentication } from '../../../core/services';
 import { User as Model } from '../../../core/models/user';
 import { IRepository } from '../../../core/dal';
 import { RepoStub } from '../dal/RepoStub';
-import { BadRequestError, NotFoundError } from '../../../routes/errors';
-import { verify } from 'jsonwebtoken';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError
+} from '../../../routes/errors';
+import { verify, sign } from 'jsonwebtoken';
 import { jwtConfig } from '../../../config';
 import { hash } from 'bcrypt';
 
@@ -32,37 +36,80 @@ describe('Authentication service', () => {
     repo.add(model);
   });
 
-  it('should throw a BadRequestError if the password is incorrect', async () => {
-    // Arrange
-    presentation.password = 'nope';
+  describe('authenticate method', () => {
+    it('should throw a BadRequestError if the password is incorrect', async () => {
+      // Arrange
+      presentation.password = 'nope';
 
-    try {
-      await sut.authenticate(presentation);
-      expect.fail();
-    } catch (err) {
-      expect(err).to.be.an.instanceOf(BadRequestError);
-    }
+      try {
+        await sut.authenticate(presentation);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(BadRequestError);
+      }
+    });
+
+    it('should throw a NotFoundError if the identifier does not exist', async () => {
+      // Arrange
+      repo.delete(0);
+
+      // Act and Assert
+      try {
+        await sut.authenticate(presentation);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(NotFoundError);
+      }
+    });
+
+    it('should should return a JWT token if authentication is successful', async () => {
+      // Act
+      const result = await sut.authenticate(presentation);
+
+      // Assert
+      const verified = verify(result, jwtConfig.secret);
+      expect(verified).to.not.be.undefined; //tslint:disable-line
+    });
   });
 
-  it('should throw a NotFoundError if the identifier does not exist', async () => {
-    // Arrange
-    repo.delete(0);
+  describe('validate token', () => {
+    it('should throw an Unauthorized Error if the token is not valid', async () => {
+      // Act and assert
+      try {
+        await sut.validateToken('nope');
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(UnauthorizedError);
+      }
+    });
 
-    // Act and Assert
-    try {
-      await sut.authenticate(presentation);
-      expect.fail();
-    } catch (err) {
-      expect(err).to.be.an.instanceOf(NotFoundError);
-    }
-  });
+    it('should throw an Unauthorozed Error if the token is associated with a wrong username', async () => {
+      // Arrange
+      const token = sign(
+        { username: 'nope' },
+        jwtConfig.secret,
+        jwtConfig.options
+      );
 
-  it('should should return a JWT token if authentication is successful', async () => {
-    // Act
-    const result = await sut.authenticate(presentation);
+      // Act and assert
+      try {
+        await sut.validateToken('nope');
+        expect.fail(token);
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(UnauthorizedError);
+      }
+    });
 
-    // Assert
-    const verified = verify(result, jwtConfig.secret);
-    expect(verified).to.not.be.undefined; //tslint:disable-line
+    it('should return the user if the token is valid', async () => {
+      // Arrange
+      const token = sign({ username }, jwtConfig.secret, jwtConfig.options);
+
+      // Act
+      const user = await sut.validateToken(token);
+
+      // Assert
+      expect(user.username).to.equal(username);
+      expect(user.email).to.equal(email);
+    });
   });
 });
