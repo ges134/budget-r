@@ -29,7 +29,7 @@ describe('Topbar', () => {
     const rendered = mount(getComponent());
 
     // Assert
-    expect(rendered.find('a.nav-link').length).toBe(1);
+    expect(rendered.find('a.nav-link').length).toBe(2);
   });
 
   it('should show the user options if the user is logged in', () => {
