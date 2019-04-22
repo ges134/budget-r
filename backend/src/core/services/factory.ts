@@ -1,6 +1,7 @@
 import { Signup } from './Signup';
 import { isNullOrUndefined } from 'util';
 import { Authentication } from './authentication';
+import { Budget } from './budget';
 
 export class Factory {
   public static getInstance() {
@@ -15,6 +16,7 @@ export class Factory {
 
   private signupInstance: Signup;
   private authenticationInstance: Authentication;
+  private budgetInstance: Budget;
 
   private constructor() {}
 
@@ -32,5 +34,13 @@ export class Factory {
     }
 
     return this.authenticationInstance;
+  }
+
+  public budget(): Budget {
+    if (isNullOrUndefined(this.budgetInstance)) {
+      this.budgetInstance = new Budget();
+    }
+
+    return this.budgetInstance;
   }
 }

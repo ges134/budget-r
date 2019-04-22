@@ -14,7 +14,16 @@ export class RepoStub<T extends Id> implements IRepository<T> {
   }
 
   public async get(filter: any, order: IOrder): Promise<T[]> {
-    return this.db;
+    const filterProps = Object.getOwnPropertyNames(filter);
+    const results = this.db.filter(item => {
+      for (const filterProp of filterProps) {
+        if (filter[filterProp] !== item[filterProp]) {
+          return false;
+        }
+      }
+      return true;
+    });
+    return results;
   }
 
   public async add(entity: T): Promise<any> {

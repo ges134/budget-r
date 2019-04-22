@@ -1,6 +1,6 @@
 import express, { RequestHandler, Request, Response } from 'express';
 import User from './controllers/user';
-import { Login } from './controllers';
+import { Login, Budgets } from './controllers';
 import { verify } from 'jsonwebtoken';
 import { jwtConfig } from '../config';
 import { Factory } from '../core/services';
@@ -31,10 +31,12 @@ export function apiRouter(): express.Router {
 
   // Got to return the router for it to be used later on.
   const login = new Login();
+  const budgets = new Budgets();
 
   router.route('/signup').put(User.getInstance().put);
   router.route('/login').post(login.post);
   router.route('/user').get(checkToken, User.getInstance().get);
+  router.route('/budgets').get(checkToken, budgets.get);
 
   return router;
 }

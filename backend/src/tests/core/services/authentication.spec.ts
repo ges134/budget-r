@@ -33,7 +33,7 @@ describe('Authentication service', () => {
     model.email = email;
     model.password = await hash(password, 10);
     model.username = username;
-    repo.add(model);
+    await repo.add(model);
   });
 
   describe('authenticate method', () => {
