@@ -4,8 +4,13 @@ import { InProgress } from '../../components/InProgress';
 import { Budget } from '../../lib/models';
 import { List } from '../../components/List';
 import { faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
-import { ListGroupItem, Row, Col, ListGroupItemHeading } from 'reactstrap';
-import ListGroupItemText from 'reactstrap/lib/ListGroupItemText';
+import {
+  ListGroupItem,
+  Row,
+  Col,
+  ListGroupItemHeading,
+  ListGroupItemText
+} from 'reactstrap';
 
 interface IState {
   budgets: Budget[];
@@ -30,21 +35,24 @@ export class Budgets extends Component<any, IState> {
   public render() {
     return (
       <NeedsAuthentication>
+        <div className="mt-2" />
         <InProgress />
         <List
           fetchURL="/budgets"
           onItemsFetched={this.onItemsFetched}
-          emptyMessage="Oh noes! Seems like you have no budgetting projects!"
+          emptyMessage="Oh no! Seems like you have no budgetting projects!"
           createLink="/budgets/create"
           icon={faFileInvoiceDollar}
         >
           {this.state.budgets.map(budget => (
+            // TODO: make a link to get to the budget details page.
             <ListGroupItem>
               <Row>
                 <Col md={10}>
-                  <ListGroupItemHeading>budget name</ListGroupItemHeading>
-                  <ListGroupItemText>Budget description</ListGroupItemText>
+                  <ListGroupItemHeading>{budget.name}</ListGroupItemHeading>
+                  <ListGroupItemText>{budget.description}</ListGroupItemText>
                 </Col>
+                <Col md={2}>more to come!</Col>
               </Row>
             </ListGroupItem>
           ))}

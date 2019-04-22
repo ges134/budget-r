@@ -12,10 +12,14 @@ export interface IProps {
 
 export const EmptyList = (props: IProps) => (
   <Alert color="primary">
-    <div className="text-centered">
-      <FontAwesomeIcon size="7x" icon={props.icon} />
+    <div className="d-flex justify-content-center">
+      <FontAwesomeIcon size="3x" icon={props.icon} />
     </div>
-    <p>{props.emptyMessage}</p>
-    <Link to={props.createLink}>Create your first one now!</Link>
+    <div className="d-flex justify-content-center mt-1">
+      <p>{props.emptyMessage}</p>
+    </div>
+    <div className="d-flex justify-content-center">
+      <Link to={props.createLink}>Create your first one now!</Link>
+    </div>
   </Alert>
 );
