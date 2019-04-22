@@ -1,7 +1,7 @@
 import 'mocha';
 import { Budget } from '../../../core/services';
 import { IRepository } from '../../../core/dal';
-import { default as Model } from '../../../core/models/budget';
+import { Budget as Model } from '../../../core/models/budget';
 import { RepoStub } from '../dal/RepoStub';
 import { expect } from 'chai';
 
@@ -23,11 +23,7 @@ describe('Budget service', () => {
         userID = 2;
       }
 
-      const budget = new Model();
-      budget.id = i;
-      budget.startDate = today;
-      budget.userID = userID;
-
+      const budget = new Model(i, today, userID, 'name', 'description');
       await repo.add(budget);
     }
   });
