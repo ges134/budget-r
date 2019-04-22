@@ -8,7 +8,7 @@ import { expect } from 'chai';
 describe('Budget service', () => {
   let sut: Budget;
   let repo: IRepository<Model>;
-  let today: Date;
+  const today = new Date();
   const nameTemplate = 'Budget';
 
   beforeEach(async () => {
