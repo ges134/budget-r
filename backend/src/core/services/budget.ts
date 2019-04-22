@@ -1,5 +1,5 @@
 import { IRepository, Repository } from '../dal';
-import { default as Model } from '../models/budget';
+import { Budget as Model } from '../models/budget';
 
 export class Budget {
   private repo: IRepository<Model>;
