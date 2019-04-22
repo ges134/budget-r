@@ -72,7 +72,7 @@ export class List extends Component<IProps, IState> {
     ) : this.state.errorMessage.length > 0 ? (
       <ErrorAlert message={this.state.errorMessage} />
     ) : this.state.hasResults ? (
-      <ListGroup>{this.props.children}</ListGroup>
+      <ListGroup flush>{this.props.children}</ListGroup>
     ) : (
       <EmptyList
         emptyMessage={this.props.emptyMessage}
