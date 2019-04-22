@@ -23,11 +23,7 @@ describe('Budget service', () => {
         userID = 2;
       }
 
-      const budget = new Model();
-      budget.id = i;
-      budget.startDate = today;
-      budget.userID = userID;
-
+      const budget = new Model(i, today, userID, 'name', 'description');
       await repo.add(budget);
     }
   });
