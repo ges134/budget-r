@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+import './EmptyList.scss';
+
 export interface IProps {
   emptyMessage: string;
   createLink: string;
@@ -18,7 +20,7 @@ export const EmptyList = (props: IProps) => (
     <div className="d-flex justify-content-center mt-1">
       <p>{props.emptyMessage}</p>
     </div>
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center link">
       <Link to={props.createLink}>Create your first one now!</Link>
     </div>
   </Alert>
