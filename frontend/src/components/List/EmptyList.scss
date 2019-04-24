@@ -1,0 +1,5 @@
+@import '../../custom.scss';
+
+.link>a {
+  color: darken($primary, 60%);
+}
