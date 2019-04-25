@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Layout } from '../components/Layout/Layout';
 import { Route, Switch } from 'react-router-dom';
 import Home from '../pages/Home/Home';
-import { Budgets } from '../pages';
 import Transactions from '../pages/Transactions/Transactions';
 import Accounts from '../pages/Accounts/Accounts';
 import Ledgers from '../pages/Ledgers/Ledgers';
@@ -12,6 +11,7 @@ import { Login } from '../pages/Login/Login';
 import { AxiosWrapper, verbs } from '../lib';
 import { cookieName } from '../lib/constants';
 import Cookies from 'js-cookie';
+import { Budget } from '../routes';
 
 interface IState {
   isFetchingUser: boolean;
@@ -69,7 +69,7 @@ export class App extends Component<any, IState> {
           <Layout username={this.state.username}>
             <Switch>
               <Route exact={true} path="/" component={Home} />
-              <Route path="/budgets" component={Budgets} />
+              <Route path="/budgets" component={Budget} />
               <Route path="/transactions" component={Transactions} />
               <Route path="/accounts" component={Accounts} />
               <Route path="/ledgers" component={Ledgers} />
