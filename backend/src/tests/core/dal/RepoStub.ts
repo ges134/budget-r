@@ -26,9 +26,11 @@ export class RepoStub<T extends Id> implements IRepository<T> {
     return results;
   }
 
-  public async add(entity: T): Promise<any> {
-    entity.id = this.db.length + 1;
+  public async add(entity: T): Promise<number> {
+    const id = this.db.length + 1;
+    entity.id = id;
     this.db.push(entity);
+    return id;
   }
 
   public delete(id: number): void {

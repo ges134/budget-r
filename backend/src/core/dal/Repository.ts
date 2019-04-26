@@ -32,8 +32,8 @@ export class Repository<T extends Id> implements IRepository<T> {
     return query;
   }
 
-  public async add(entity: T): Promise<any> {
-    await this.db.insert({ ...entity });
+  public async add(entity: T): Promise<number> {
+    return (await this.db.insert({ ...entity }).returning('id')) as number;
   }
 
   public delete(id: number): void {
