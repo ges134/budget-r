@@ -36,7 +36,10 @@ export function apiRouter(): express.Router {
   router.route('/signup').put(User.getInstance().put);
   router.route('/login').post(login.post);
   router.route('/user').get(checkToken, User.getInstance().get);
-  router.route('/budgets').get(checkToken, budgets.get);
+  router
+    .route('/budgets')
+    .get(checkToken, budgets.get)
+    .put(checkToken, budgets.put);
 
   return router;
 }
