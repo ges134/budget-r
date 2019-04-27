@@ -10,7 +10,7 @@ let helper: string;
 // Input related.
 const name = 'name';
 const label = 'The input label';
-const type = 'text';
+let type: string;
 
 const getComponent = (withInput?: boolean) => (
   <FormikFormWrapper
@@ -19,13 +19,23 @@ const getComponent = (withInput?: boolean) => (
     submitText="Submit"
     submitUrl="/"
   >
-    {withInput ? (
-      <FormikInput name={name} label={label} type={type} helper={helper} />
-    ) : (
-      <></>
-    )}
+    {withInput ? getInput() : <></>}
   </FormikFormWrapper>
 );
+
+const getInput = () => {
+  if (type === 'select') {
+    return (
+      <FormikInput name={name} label={label} type={type} helper={helper}>
+        <option value={1}>value</option>
+      </FormikInput>
+    );
+  } else {
+    return (
+      <FormikInput name={name} label={label} type={type} helper={helper} />
+    );
+  }
+};
 
 describe('FormikFormWrapper', () => {
   it('should run basic tests', () => {
@@ -46,6 +56,7 @@ describe('FormikFormWrapper', () => {
   describe('With FormikInput', () => {
     beforeEach(() => {
       helper = '';
+      type = 'text';
     });
 
     it('should run basic tests', () => {
@@ -61,6 +72,17 @@ describe('FormikFormWrapper', () => {
 
       // Assert
       expect(rendered.find('.form-text').length).toBe(1);
+    });
+
+    it('should render <option> tags if it is a select input', () => {
+      // Arrange
+      type = 'select';
+
+      // Act
+      const rendered = mount(getComponent(true));
+
+      // Assert
+      expect(rendered.find('option').length).toBe(1);
     });
   });
 });

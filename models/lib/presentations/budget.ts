@@ -18,12 +18,6 @@ export class Budget implements IPresentation {
   ];
 
   public validationSchema: ObjectSchema<any> = object().shape({
-    identifier: string()
-      .max(250, 'An username or an email address must be under 250 characters')
-      .required('An username or an email address is required.'),
-    password: string()
-      .max(72, 'The password must be under 72 characters')
-      .required('A password is required'),
     name: string().required('The name of the budgeting project is required'),
     description: string().notRequired(),
     startMonth: string()

@@ -40,8 +40,8 @@ export class Budgets extends Component<any, IState> {
         <List
           fetchURL="/budgets"
           onItemsFetched={this.onItemsFetched}
-          emptyMessage="Oh no! Seems like you have no budgetting projects!"
-          createLink="/budgets/create"
+          emptyMessage="Oh no! Seems like you have no budgeting project!"
+          createLink="/budgets/create/step1"
           icon={faFileInvoiceDollar}
         >
           {this.state.budgets.map(budget => (
