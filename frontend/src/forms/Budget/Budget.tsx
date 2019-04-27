@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import { FormikFormWrapper } from '../../components/Forms';
-import { Budget } from '../../lib/models';
+import { Budget as Presentation } from '../../lib/models';
 import { verbs } from '../../lib';
 import { CardWrapper } from '../../components/CardWrapper';
 import { FormikInput } from '../../components/Input';
@@ -10,9 +10,9 @@ interface IState {
   budgetID: number;
 }
 
-export class LoginForm extends Component<any, IState> {
-  public constructor() {
-    super({});
+export class Budget extends Component<any, IState> {
+  public constructor(props: any) {
+    super(props);
 
     this.state = {
       budgetID: 0
@@ -25,7 +25,7 @@ export class LoginForm extends Component<any, IState> {
 
   public render() {
     const today = new Date();
-    const budget = new Budget('January', today.getFullYear(), '', '');
+    const budget = new Presentation('January', today.getFullYear(), '', '');
 
     return this.state.budgetID ? (
       <Redirect to={`/budgets/create/step2/${this.state.budgetID}`} push />
@@ -53,8 +53,10 @@ export class LoginForm extends Component<any, IState> {
             label="At what month should this project start?"
             type="select"
           >
-            {Budget.months.map(month => (
-              <option value={month}>{month}</option>
+            {Presentation.months.map((month, index) => (
+              <option value={month} key={index}>
+                {month}
+              </option>
             ))}
           </FormikInput>
           <FormikInput
