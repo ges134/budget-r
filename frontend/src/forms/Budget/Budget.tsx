@@ -19,13 +19,14 @@ export class Budget extends Component<any, IState> {
     };
   }
 
-  public onCreationSuccess = (budgetID: number) => {
-    this.setState({ budgetID });
-  };
-
   public render() {
     const today = new Date();
-    const budget = new Presentation('January', today.getFullYear(), '', '');
+    const budget = new Presentation(
+      Presentation.months[today.getMonth()],
+      today.getFullYear(),
+      '',
+      ''
+    );
 
     return this.state.budgetID ? (
       <Redirect to={`/budgets/create/step2/${this.state.budgetID}`} push />
@@ -33,19 +34,21 @@ export class Budget extends Component<any, IState> {
       <FormikFormWrapper
         initialValues={budget}
         validationSchema={budget.validationSchema}
-        submitText="Create your budgetting project"
+        submitText="Create"
         submitUrl="/budgets"
         verb={verbs.put}
+        formIsReturnigId
+        redirectLink="/budgets/create/step2"
       >
         <CardWrapper header="Let's start creating your budgeting project">
           <FormikInput
             name="name"
-            label="Name of the budgeting project"
+            label="How should it be named?"
             type="text"
           />
           <FormikInput
             name="description"
-            label="descriptive information about the budgeting project"
+            label="How should it be described?"
             type="textarea"
           />
           <FormikInput

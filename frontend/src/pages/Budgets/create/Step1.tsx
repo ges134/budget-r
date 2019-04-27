@@ -2,6 +2,7 @@ import React from 'react';
 import { NeedsAuthentication } from '../../../components/needsAuthenticaton';
 import { InProgress } from '../../../components/InProgress';
 import { ProgressBar } from '../../../components';
+import { Budget } from '../../../forms';
 
 export const Step1 = () => (
   <>
@@ -9,6 +10,7 @@ export const Step1 = () => (
       <div className="mt-2" />
       <InProgress />
       <ProgressBar value={0} stepText="Budget information" />
+      <Budget />
     </NeedsAuthentication>
   </>
 );

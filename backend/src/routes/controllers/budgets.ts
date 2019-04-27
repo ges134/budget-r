@@ -45,7 +45,7 @@ export class Budgets {
       if (error instanceof ValidationError) {
         res.status(400).send(error.errors);
       } else {
-        res.status(500).send(error.errors);
+        res.status(500).send(error.message);
       }
     }
   }

@@ -17,6 +17,7 @@ interface IProps {
   submitUrl: string;
   verb?: verbs;
   onSuccess?: (res: any) => void;
+  formIsReturnigId?: boolean;
 }
 
 export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
@@ -26,7 +27,8 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
     this.state = {
       isSubmitting: false,
       hasSucceeded: false,
-      errors: []
+      errors: [],
+      id: 0
     };
   }
 
@@ -40,6 +42,12 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
 
         if (this.props.onSuccess) {
           this.props.onSuccess(res.data);
+        }
+
+        if (this.props.formIsReturnigId) {
+          this.setState({
+            id: res.data[0]
+          });
         }
 
         this.setState({
@@ -87,7 +95,7 @@ export class FormikFormWrapper extends Component<IProps, IAsyncForm> {
 
   public render() {
     return this.props.redirectLink && this.state.hasSucceeded ? (
-      <Redirect to={this.props.redirectLink} push />
+      <Redirect to={`${this.props.redirectLink}/${this.state.id}`} push />
     ) : (
       <Formik
         initialValues={this.props.initialValues}

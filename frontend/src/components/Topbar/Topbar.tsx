@@ -74,7 +74,7 @@ export class Topbar extends Component<IProps, IState> {
 
     return (
       <Fragment>
-        <Navbar color="light" light expand="md">
+        <Navbar color="light" light expand="md" fixed="top">
           <NavbarBrand href="/">Budget-R</NavbarBrand>
           <Nav className="ml-auto" navbar>
             <NavbarToggler onClick={this.toggle} />
