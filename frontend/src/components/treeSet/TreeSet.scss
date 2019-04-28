@@ -1,0 +1,11 @@
+$offsets: 12;
+
+@mixin offset-x {
+  @for $i from 1 through $offsets {
+    .offset-#{$i} {
+      margin-left: 5px * $i;
+    }
+  }
+}
+
+@include offset-x;
