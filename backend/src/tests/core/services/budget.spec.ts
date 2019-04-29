@@ -5,34 +5,16 @@ import { Budget as Model } from '../../../core/models/budget';
 import { RepoStub } from '../dal/RepoStub';
 import { expect } from 'chai';
 import { Budget as Presentation } from '../../../models-folder';
+import { TestHelper } from '../../testHelper';
 
 describe('Budget service', () => {
   let sut: Budget;
   let repo: IRepository<Model>;
-  const today = new Date();
-  const nameTemplate = 'Budget';
 
   beforeEach(async () => {
     repo = new RepoStub();
     sut = new Budget(repo);
-
-    for (let i = 1; i <= 5; i++) {
-      let userID = 3;
-      if (i < 3) {
-        userID = 1;
-      } else if (i >= 3 && i <= 4) {
-        userID = 2;
-      }
-
-      const budget = new Model(
-        today,
-        userID,
-        `${nameTemplate} ${i}`,
-        'description',
-        i
-      );
-      await repo.add(budget);
-    }
+    await TestHelper.addManyToRepo<Model>(TestHelper.sampleBudgets(), repo);
   });
 
   describe('budgets from user', () => {
@@ -51,7 +33,7 @@ describe('Budget service', () => {
   });
 
   describe('add budget', () => {
-    it('should add a new budget in the API', async () => {
+    it('should add a new budget in the database', async () => {
       // Arrange
       const userID = 1;
       const presentation = new Presentation(
@@ -73,6 +55,24 @@ describe('Budget service', () => {
       expect(created.startDate.getFullYear()).to.equal(
         expectedDate.getFullYear()
       );
+    });
+  });
+
+  describe('budget belongs to user', () => {
+    it('should return true if it belongs to the user', async () => {
+      // Act
+      const result = await sut.budgetBelongsToUser(1, 1);
+
+      // Assert
+      expect(result).to.be.true; // tslint:disable-line
+    });
+
+    it('should return false if it does not belongs to the user', async () => {
+      // Act
+      const result = await sut.budgetBelongsToUser(1, 2);
+
+      // Assert
+      expect(result).to.be.false; // tslint:disable-line
     });
   });
 });

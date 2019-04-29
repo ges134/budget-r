@@ -1,4 +1,4 @@
-import Id from '../models/Id';
+import { Id } from '../models';
 import { IOrder } from './Repository';
 
 export interface IRepository<T extends Id> {

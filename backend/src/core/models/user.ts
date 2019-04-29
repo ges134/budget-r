@@ -1,4 +1,4 @@
-import Id from './Id';
+import { Id } from './Id';
 
 export class User implements Id {
   public static tableName: string = 'user';

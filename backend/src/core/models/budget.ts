@@ -1,4 +1,4 @@
-import Id from './Id';
+import { Id } from './Id';
 
 export class Budget implements Id {
   public static tableName: string = 'budget';
@@ -12,6 +12,6 @@ export class Budget implements Id {
     public description: string,
     id?: number
   ) {
-    this.id = id || -1;
+    this.id = id || 0;
   }
 }
