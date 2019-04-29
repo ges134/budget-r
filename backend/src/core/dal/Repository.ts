@@ -1,5 +1,5 @@
 import { QueryBuilder } from 'knex';
-import Id from '../models/Id';
+import { Id } from '../models';
 import { IRepository } from './IRepository';
 import KnexWrapper from './KnexWrapper';
 

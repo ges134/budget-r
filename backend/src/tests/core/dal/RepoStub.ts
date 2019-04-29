@@ -1,5 +1,5 @@
 import { IRepository } from '../../../core/dal';
-import Id from '../../../core/models/Id';
+import { Id } from '../../../core/models';
 import { IOrder } from '../../../core/dal/Repository';
 
 export class RepoStub<T extends Id> implements IRepository<T> {
