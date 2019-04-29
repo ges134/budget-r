@@ -26,7 +26,7 @@ export default class User {
       );
 
       service.createNewUser(validated);
-      res.status(200).send('success!');
+      res.status(201).send('success!');
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(400).send(error.errors);

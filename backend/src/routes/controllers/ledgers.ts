@@ -6,7 +6,7 @@ import { ValidationError } from 'yup';
 import { HttpError } from '../errors/httpError';
 
 export class Ledgers {
-  private service: Service; // FIXME: Add Ledger
+  private service: Service;
 
   public constructor(service?: Service) {
     this.service = service || Factory.getInstance().ledger();
