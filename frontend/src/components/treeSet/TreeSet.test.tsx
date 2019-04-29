@@ -30,9 +30,9 @@ describe('Tree set', () => {
 
       // Assert
       expect(rendered.find('li.list-group-item').length).toBe(1);
-      expect(rendered.find('li.offset-1').length).toBe(1);
-      expect(rendered.find('li.offset-2').length).toBe(0);
-      expect(rendered.find('li.offset-3').length).toBe(0);
+      expect(rendered.find('li.space-1').length).toBe(1);
+      expect(rendered.find('li.space-2').length).toBe(0);
+      expect(rendered.find('li.space-3').length).toBe(0);
     });
   });
 
@@ -46,9 +46,9 @@ describe('Tree set', () => {
 
       // Assert
       expect(rendered.find('.list-group-item').length).toBe(3);
-      expect(rendered.find('li.offset-1').length).toBe(1);
-      expect(rendered.find('li.offset-2').length).toBe(1);
-      expect(rendered.find('li.offset-3').length).toBe(1);
+      expect(rendered.find('li.space-1').length).toBe(1);
+      expect(rendered.find('li.space-2').length).toBe(1);
+      expect(rendered.find('li.space-3').length).toBe(1);
     });
   });
 
@@ -62,9 +62,9 @@ describe('Tree set', () => {
 
       // Assert
       expect(rendered.find('.list-group-item').length).toBe(5);
-      expect(rendered.find('li.offset-1').length).toBe(1);
-      expect(rendered.find('li.offset-2').length).toBe(2);
-      expect(rendered.find('li.offset-3').length).toBe(2);
+      expect(rendered.find('li.space-1').length).toBe(1);
+      expect(rendered.find('li.space-2').length).toBe(2);
+      expect(rendered.find('li.space-3').length).toBe(2);
     });
   });
 
@@ -78,9 +78,9 @@ describe('Tree set', () => {
 
       // Assert
       expect(rendered.find('.list-group-item').length).toBe(5);
-      expect(rendered.find('li.offset-1').length).toBe(1);
-      expect(rendered.find('li.offset-2').length).toBe(2);
-      expect(rendered.find('li.offset-3').length).toBe(2);
+      expect(rendered.find('li.space-1').length).toBe(1);
+      expect(rendered.find('li.space-2').length).toBe(2);
+      expect(rendered.find('li.space-3').length).toBe(2);
     });
   });
 
@@ -91,9 +91,9 @@ describe('Tree set', () => {
 
       // Assert
       expect(rendered.find('.list-group-item').length).toBe(14);
-      expect(rendered.find('li.offset-1').length).toBe(4);
-      expect(rendered.find('li.offset-2').length).toBe(5);
-      expect(rendered.find('li.offset-3').length).toBe(5);
+      expect(rendered.find('li.space-1').length).toBe(4);
+      expect(rendered.find('li.space-2').length).toBe(5);
+      expect(rendered.find('li.space-3').length).toBe(5);
     });
   });
 });
