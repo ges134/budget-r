@@ -1,6 +1,6 @@
 import express, { RequestHandler, Request, Response } from 'express';
 import User from './controllers/user';
-import { Login, Budgets } from './controllers';
+import { Login, Budgets, Ledgers } from './controllers';
 import { verify } from 'jsonwebtoken';
 import { jwtConfig } from '../config';
 import { Factory } from '../core/services';

@@ -2,7 +2,7 @@ import { IRepository, Repository } from '../dal';
 import { Ledger as Model } from '../models';
 import { Ledger as Presentation } from '../../models-folder';
 import { Budget } from './budget';
-import { ForbiddenError } from 'src/routes/errors/forbiddenError';
+import { ForbiddenError } from '../../routes/errors/forbiddenError';
 
 export class Ledger {
   private repo: IRepository<Model>;
@@ -17,7 +17,7 @@ export class Ledger {
     presentation: Presentation,
     userID: number
   ): Promise<number> {
-    const budgetsBelongToUser = this.budget.budgetBelongsToUser(
+    const budgetsBelongToUser = await this.budget.budgetBelongsToUser(
       presentation.budgetID,
       userID
     );
