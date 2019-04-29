@@ -1,7 +1,8 @@
 import { IPresentation } from '../helpers';
 import { ObjectSchema, object, number, string } from 'yup';
+import { Ledger as Common } from './commons';
 
-export class Ledger implements IPresentation {
+export class Ledger implements IPresentation, Common {
   public validationSchema: ObjectSchema<any> = object().shape({
     name: string().required('The name of the ledger is required'),
     budgetID: number().required(
