@@ -30,4 +30,19 @@ export class Budget {
     const id = await this.repo.add(model);
     return id;
   }
+
+  public async budgetBelongsToUser(
+    budgetID: number,
+    userID: number
+  ): Promise<boolean> {
+    const budgets = await this.budgetsFromUser(userID);
+
+    for (const budget of budgets) {
+      if (budget.id === budgetID) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
