@@ -1,4 +1,4 @@
-import Id from './Id';
+import { Id } from './Id';
 
 export class Ledger implements Id {
   public static tableName: string = 'ledger';

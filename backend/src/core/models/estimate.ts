@@ -1,4 +1,4 @@
-import Id from './Id'
+import { Id } from './Id';
 
 export default class Estimate implements Id {
   public static tableName: string = 'estimate';

@@ -1,4 +1,4 @@
-import Id from './Id';
+import { Id } from './Id';
 
 export default class Account implements Id {
   public static tableName: string = 'account';
