@@ -1,8 +1,9 @@
-export class UnauthorizedError extends Error {
+import { HttpError } from './httpError';
+
+export class UnauthorizedError extends HttpError {
   public static readonly genericErrorMessage: string = 'Token is not valid';
 
   constructor(message?: string) {
-    super(message);
-    this.message = message || UnauthorizedError.genericErrorMessage;
+    super(message || UnauthorizedError.genericErrorMessage, 401);
   }
 }
