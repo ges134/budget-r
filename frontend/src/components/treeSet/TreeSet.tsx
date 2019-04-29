@@ -1,7 +1,9 @@
 import React, { Component, ReactNode } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-interface ITreeItem {
+import './TreeSet.scss';
+
+export interface ITreeItem {
   key: number;
   display: string;
   depth: number;
@@ -32,47 +34,13 @@ interface IProps {
  * 1 -> 2 -> 3
  *        -> 3
  *   -> 2
- * @example
- * [1, 2, 3, 1, 2, 2, 3, 3, 1, 2, 3, 3, 2]
- *
  */
-export class TreeSet extends Component<IProps, any> {
-  constructor(props: IProps) {
-    super(props);
-  }
-
-  public treeClass = (depth: number) => `offset-${depth + 1}`;
-
-  public buildTree = (items: ITreeItem[], maxDepth: number): ReactNode => {
-    const [current, ...rest] = items;
-
-    const item = <ListGroupItem className={this.treeClass(current.depth)} />;
-
-    if (current.depth === maxDepth) {
-      return (
-        <>
-          {item}
-          {this.buildTree(rest, maxDepth)}
-        </>
-      );
-    } else {
-      return (
-        <>
-          {item}
-          <ListGroup className={this.treeClass(current.depth)}>
-            {this.buildTree(rest, maxDepth)}
-          </ListGroup>
-        </>
-      );
-    }
-  };
-
-  public render() {
-    const depths = this.props.items.map(item => item.depth);
-    const maxDepth = Math.max(...depths);
-
-    return (
-      <ListGroup flush>{this.buildTree(this.props.items, maxDepth)}</ListGroup>
-    );
-  }
-}
+export const TreeSet = (props: IProps) => (
+  <ListGroup flush>
+    {props.items.map(item => (
+      <ListGroupItem className={`space-${item.depth}`} key={item.key}>
+        {item.display}
+      </ListGroupItem>
+    ))}
+  </ListGroup>
+);
