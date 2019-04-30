@@ -38,7 +38,7 @@ export class Ledger {
   public async getLedgersForBudget(
     budgetID: number,
     userID: number
-  ): Promise<ReadOnlyPresentation> {
+  ): Promise<ReadOnlyPresentation[]> {
     const budgetBelongsToUser = await this.budget.budgetBelongsToUser(
       budgetID,
       userID
@@ -93,9 +93,7 @@ export class Ledger {
     let depth = 1;
     while (current.parentLedgerID) {
       depth++;
-      current = ledgers.filter(
-        ledger => ledger.id === current.parentLedgerID
-      )[0];
+      current = ledgers.filter(l => l.id === current.parentLedgerID)[0];
     }
 
     return new ReadOnlyPresentation(
