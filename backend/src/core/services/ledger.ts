@@ -47,9 +47,10 @@ export class Ledger {
     if (budgetBelongsToUser) {
       const ledgers = await this.repo.get({ userID });
       const orderedList = this.orderedLedgers(ledgers);
-      return orderedList.map(ledger =>
+      const result = orderedList.map(ledger =>
         this.addDepthToLedger(ledger, orderedList)
       );
+      return result;
     } else {
       throw new ForbiddenError();
     }
