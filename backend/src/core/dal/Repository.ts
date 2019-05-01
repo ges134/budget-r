@@ -37,8 +37,8 @@ export class Repository<T extends Id> implements IRepository<T> {
     return (await this.db.insert({ ...rest }).returning('id')) as number;
   }
 
-  public delete(id: number): void {
-    this.db.where({ id }).del();
+  public async delete(id: number): Promise<void> {
+    await this.db.where({ id }).del();
   }
 
   public async update(entity: T): Promise<void> {

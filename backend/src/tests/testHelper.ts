@@ -1,5 +1,6 @@
-import { Budget, Id, Ledger } from '../core/models';
+import { Budget, Id, Ledger, Estimate } from '../core/models';
 import { IRepository } from '../core/dal';
+import { reporters } from 'mocha';
 
 export class TestHelper {
   public static sampleBudgets(): Budget[] {
@@ -49,6 +50,17 @@ export class TestHelper {
       }
 
       sample.push(new Ledger(`Ledger ${i}`, 1, i, parentLedgerID));
+    }
+
+    return sample;
+  }
+
+  public static sampleEstimates(): Estimate[] {
+    const sample: Estimate[] = [];
+    const today = new Date();
+
+    for (let i = 1; i <= 10; i++) {
+      sample.push(new Estimate(today.getFullYear(), i - 1, 100, i, 1));
     }
 
     return sample;

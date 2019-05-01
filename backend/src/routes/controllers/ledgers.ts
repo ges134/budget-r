@@ -68,4 +68,21 @@ export class Ledgers {
       }
     }
   }
+
+  public async delete(req: Request, res: Response) {
+    try {
+      const { decoded } = req.headers;
+      const user = Token.getUserFromDecoded(decoded);
+
+      const { id } = req.body;
+
+      await this.service.deleteLedger(id, user.id);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        res.status(error.errorCode).send(error.message);
+      } else {
+        res.status(500).send(error.message);
+      }
+    }
+  }
 }

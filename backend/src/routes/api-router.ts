@@ -41,7 +41,10 @@ export function apiRouter(): express.Router {
     .route('/budgets')
     .get(checkToken, budgets.get)
     .put(checkToken, budgets.put);
-  router.route('/ledgers').put(checkToken, ledgers.put);
+  router
+    .route('/ledgers')
+    .put(checkToken, ledgers.put)
+    .post(checkToken, ledgers.post);
 
   return router;
 }
