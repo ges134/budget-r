@@ -1,6 +1,6 @@
 import { IPresentation } from '../helpers';
 import { ObjectSchema, object, number, string } from 'yup';
-import { Ledger as Common } from './commons';
+import { ILedger as Common } from './commons';
 
 export class Ledger implements IPresentation, Common {
   public validationSchema: ObjectSchema<any> = object().shape({

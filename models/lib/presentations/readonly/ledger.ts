@@ -1,4 +1,4 @@
-import { Ledger as Common } from '../commons';
+import { ILedger as Common } from '../commons';
 
 export class Ledger implements Common {
   public constructor(
