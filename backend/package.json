@@ -9,6 +9,7 @@
     "start": "npm run server",
     "server": "nodemon dist/server.js",
     "test": "ts-mocha src/**/*.spec.ts",
+    "test:watch": "ts-mocha src/**/*.spec.ts --watch",
     "test:debug": "ts-mocha --inspect-brk src/**/*.spec.ts",
     "debug": "nodemon dist/server.js --inspect",
     "lint": "tslint -c tslint.json 'src/**/*.ts'"

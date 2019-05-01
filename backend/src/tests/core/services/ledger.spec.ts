@@ -7,6 +7,7 @@ import { Ledger as Presentation } from '../../../models-folder';
 import { expect } from 'chai';
 import { TestHelper } from '../../testHelper';
 import { ForbiddenError } from '../../../routes/errors';
+import { Ledger as ReadOnlyPresentation } from '../../../models-folder/presentations';
 
 describe('Ledger service', () => {
   let sut: Ledger;
@@ -49,6 +50,41 @@ describe('Ledger service', () => {
       } catch (err) {
         expect(err).to.be.an.instanceOf(ForbiddenError);
       }
+    });
+  });
+
+  describe('get ledgers for budget', () => {
+    beforeEach(async () => {
+      await TestHelper.addManyToRepo<Model>(TestHelper.sampleLedgers(), repo);
+    });
+
+    it('should throw a forbidden error if the budget id does not belong to user', async () => {
+      // Act and Assert
+      try {
+        await sut.getLedgersForBudget(1, 2);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(ForbiddenError);
+      }
+    });
+
+    it('should give ledgers ordered by their parent and child', async () => {
+      // Act
+      const result = await sut.getLedgersForBudget(1, 1);
+
+      // Assert
+      // Expected array should have the following depths [1, 2, 2, 3, 3, 1, 2, 3, 3, 2]
+      expect(result.length).to.equal(10);
+      expect(result[0].depth).to.equal(1);
+      expect(result[1].depth).to.equal(2);
+      expect(result[2].depth).to.equal(2);
+      expect(result[3].depth).to.equal(3);
+      expect(result[4].depth).to.equal(3);
+      expect(result[5].depth).to.equal(1);
+      expect(result[6].depth).to.equal(2);
+      expect(result[7].depth).to.equal(3);
+      expect(result[8].depth).to.equal(3);
+      expect(result[9].depth).to.equal(2);
     });
   });
 });
