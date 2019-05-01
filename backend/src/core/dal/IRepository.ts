@@ -6,5 +6,5 @@ export interface IRepository<T extends Id> {
   get(filter?: any, order?: IOrder): Promise<T[]>;
   add(entity: T): Promise<number>;
   delete(id: number): void;
-  update(entity: T): void;
+  update(entity: T): Promise<void>;
 }

@@ -6,6 +6,7 @@ import { ForbiddenError } from '../../routes/errors/forbiddenError';
 import { Ledger as ReadOnlyPresentation } from '../../models-folder/presentations/readonly';
 import { isNullOrUndefined } from 'util';
 import { ArrayTree } from './dataStructures';
+import { Ledger as ModificationPresentation } from '../../models-folder/presentations/modification';
 
 export class Ledger {
   private repo: IRepository<Model>;
@@ -20,40 +21,37 @@ export class Ledger {
     presentation: Presentation,
     userID: number
   ): Promise<number> {
-    const budgetsBelongToUser = await this.budget.budgetBelongsToUser(
-      presentation.budgetID,
-      userID
-    );
+    await this.throwIfBudgetDoesNotBelongToUser(presentation.budgetID, userID);
 
-    if (budgetsBelongToUser) {
-      const { name, budgetID, parentLedgerID } = presentation;
-      const model = new Model(name, budgetID, parentLedgerID);
-      const id = await this.repo.add(model);
-      return id;
-    } else {
-      throw new ForbiddenError();
-    }
+    const { name, budgetID, parentLedgerID } = presentation;
+    const model = new Model(name, budgetID, parentLedgerID);
+    const id = await this.repo.add(model);
+    return id;
   }
 
   public async getLedgersForBudget(
     budgetID: number,
     userID: number
   ): Promise<ReadOnlyPresentation[]> {
-    const budgetBelongsToUser = await this.budget.budgetBelongsToUser(
-      budgetID,
-      userID
-    );
+    await this.throwIfBudgetDoesNotBelongToUser(budgetID, userID);
 
-    if (budgetBelongsToUser) {
-      const ledgers = await this.repo.get({ budgetID });
-      const orderedList = this.orderedLedgers(ledgers);
-      const result = orderedList.map(ledger =>
-        this.addDepthToLedger(ledger, orderedList)
-      );
-      return result;
-    } else {
-      throw new ForbiddenError();
-    }
+    const ledgers = await this.repo.get({ budgetID });
+    const orderedList = this.orderedLedgers(ledgers);
+    const result = orderedList.map(ledger =>
+      this.addDepthToLedger(ledger, orderedList)
+    );
+    return result;
+  }
+
+  public async editLedger(
+    ledger: ModificationPresentation,
+    userID: number
+  ): Promise<void> {
+    const model = await this.repo.find(ledger.id);
+    await this.throwIfLedgerDoesNotBelongToUser(model, userID);
+    model.name = ledger.name;
+    model.parentLedgerID = ledger.parentLedgerID;
+    await this.repo.update(model);
   }
 
   private orderedLedgers(ledgers: Model[]): Model[] {
@@ -106,5 +104,33 @@ export class Ledger {
       depth,
       ledger.parentLedgerID
     );
+  }
+
+  private async throwIfBudgetDoesNotBelongToUser(
+    budgetID: number,
+    userID: number
+  ) {
+    const belongs = await this.budget.budgetBelongsToUser(budgetID, userID);
+    if (!belongs) {
+      throw new ForbiddenError();
+    }
+  }
+
+  private async throwIfLedgerDoesNotBelongToUser(
+    ledger: Model,
+    userID: number
+  ) {
+    const budgets = await this.budget.budgetsFromUser(userID);
+    let found = false;
+    for (const budget of budgets) {
+      if (ledger.budgetID === budget.id) {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      throw new ForbiddenError();
+    }
   }
 }

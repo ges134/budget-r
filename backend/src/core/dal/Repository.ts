@@ -41,7 +41,7 @@ export class Repository<T extends Id> implements IRepository<T> {
     this.db.where({ id }).del();
   }
 
-  public update(entity: T): void {
-    this.db.where(entity.id).update(entity);
+  public async update(entity: T): Promise<void> {
+    return this.db.where(entity.id).update(entity);
   }
 }
