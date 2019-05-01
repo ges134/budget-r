@@ -3,6 +3,7 @@ import { isNullOrUndefined } from 'util';
 import { Authentication } from './authentication';
 import { Budget } from './budget';
 import { Ledger } from './ledger';
+import { Estimate } from './estimate';
 
 export class Factory {
   public static getInstance() {
@@ -19,6 +20,7 @@ export class Factory {
   private authenticationInstance: Authentication;
   private budgetInstance: Budget;
   private ledgerInstance: Ledger;
+  private estimateInstance: Estimate;
 
   private constructor() {}
 
@@ -52,5 +54,13 @@ export class Factory {
     }
 
     return this.ledgerInstance;
+  }
+
+  public estimate(): Estimate {
+    if (isNullOrUndefined(this.estimateInstance)) {
+      this.estimateInstance = new Estimate();
+    }
+
+    return this.estimateInstance;
   }
 }

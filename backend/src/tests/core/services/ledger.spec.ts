@@ -1,13 +1,16 @@
 import 'mocha';
-import { Ledger, Budget } from '../../../core/services';
+import { Ledger, Budget, Estimate } from '../../../core/services';
 import { IRepository } from '../../../core/dal';
-import { Ledger as Model, Budget as BudgetModel } from '../../../core/models';
+import {
+  Ledger as Model,
+  Budget as BudgetModel,
+  Estimate as EstimateModel
+} from '../../../core/models';
 import { RepoStub } from '../dal/RepoStub';
 import { Ledger as Presentation } from '../../../models-folder';
 import { expect } from 'chai';
 import { TestHelper } from '../../testHelper';
-import { ForbiddenError } from '../../../routes/errors';
-import { Ledger as ReadOnlyPresentation } from '../../../models-folder/presentations';
+import { ForbiddenError, ConflictError } from '../../../routes/errors';
 import { Ledger as ModificationPresentation } from '../../../models-folder/presentations/modification';
 
 describe('Ledger service', () => {
@@ -16,6 +19,9 @@ describe('Ledger service', () => {
 
   let budgetService: Budget;
   let budgetRepo: IRepository<BudgetModel>;
+
+  let estimateService: Estimate;
+  let estimateRepo: IRepository<EstimateModel>;
 
   let presentation: Presentation;
 
@@ -26,9 +32,11 @@ describe('Ledger service', () => {
       TestHelper.sampleBudgets(),
       budgetRepo
     );
+    estimateRepo = new RepoStub();
 
+    estimateService = new Estimate(estimateRepo);
     budgetService = new Budget(budgetRepo);
-    sut = new Ledger(repo, budgetService);
+    sut = new Ledger(repo, budgetService, estimateService);
 
     presentation = new Presentation('Ledger', 1);
   });
@@ -130,6 +138,52 @@ describe('Ledger service', () => {
       const modified = await repo.find(1);
       expect(modified.name).to.equal('modified ledger');
       expect(modified.parentLedgerID).to.equal(0);
+    });
+  });
+
+  describe('delete ledger', () => {
+    beforeEach(async () => {
+      await TestHelper.addManyToRepo<Model>(TestHelper.sampleLedgers(), repo);
+
+      const secondEntity = await repo.find(2);
+      secondEntity.parentLedgerID = 0;
+      secondEntity.name = 'Another ledger';
+      secondEntity.budgetID = 4;
+    });
+
+    it('should throw a forbiden error if the ledger does not belong to the user', async () => {
+      // Act and assert
+      try {
+        await sut.deleteLedger(2, 1);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.instanceOf(ForbiddenError);
+      }
+    });
+
+    it('should throw a conflict error if the ledger has estimates attached', async () => {
+      // Arrange
+      TestHelper.addManyToRepo<EstimateModel>(
+        TestHelper.sampleEstimates(),
+        estimateRepo
+      );
+
+      // Act and assert
+      try {
+        await sut.deleteLedger(1, 1);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.instanceOf(ConflictError);
+      }
+    });
+
+    it('should delete ledger if the request is valid', async () => {
+      // Act
+      await sut.deleteLedger(1, 1);
+
+      // Assert
+      const entity = await repo.find(1);
+      expect(entity).to.be.undefined; //tslint:disable-line
     });
   });
 });

@@ -33,8 +33,8 @@ export class RepoStub<T extends Id> implements IRepository<T> {
     return id;
   }
 
-  public delete(id: number): void {
-    this.db.splice(id, 1);
+  public async delete(id: number): Promise<void> {
+    this.db.splice(id - 1, 1);
   }
 
   public async update(entity: T): Promise<void> {

@@ -7,14 +7,22 @@ import { Ledger as ReadOnlyPresentation } from '../../models-folder/presentation
 import { isNullOrUndefined } from 'util';
 import { ArrayTree } from './dataStructures';
 import { Ledger as ModificationPresentation } from '../../models-folder/presentations/modification';
+import { Estimate } from './estimate';
+import { ConflictError } from '../../routes/errors';
 
 export class Ledger {
   private repo: IRepository<Model>;
   private budget: Budget;
+  private estimate: Estimate;
 
-  public constructor(repo?: IRepository<Model>, budget?: Budget) {
+  public constructor(
+    repo?: IRepository<Model>,
+    budget?: Budget,
+    estimate?: Estimate
+  ) {
     this.repo = repo || new Repository<Model>(Model.tableName);
     this.budget = budget || new Budget();
+    this.estimate = estimate || new Estimate();
   }
 
   public async addLedger(
@@ -52,6 +60,20 @@ export class Ledger {
     model.name = ledger.name;
     model.parentLedgerID = ledger.parentLedgerID;
     await this.repo.update(model);
+  }
+
+  public async deleteLedger(ledgerID: number, userID: number): Promise<void> {
+    const model = await this.repo.find(ledgerID);
+    await this.throwIfLedgerDoesNotBelongToUser(model, userID);
+
+    const hasEstimates = await this.estimate.ledgerHasEstimates(ledgerID);
+    if (hasEstimates) {
+      throw new ConflictError(
+        'The ledger has estimates in them. In order to delete it, you must first delete the estimates.'
+      );
+    } else {
+      await this.repo.delete(ledgerID);
+    }
   }
 
   private orderedLedgers(ledgers: Model[]): Model[] {
