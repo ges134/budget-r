@@ -8,6 +8,7 @@ import { expect } from 'chai';
 import { TestHelper } from '../../testHelper';
 import { ForbiddenError } from '../../../routes/errors';
 import { Ledger as ReadOnlyPresentation } from '../../../models-folder/presentations';
+import { Ledger as ModificationPresentation } from '../../../models-folder/presentations/modification';
 
 describe('Ledger service', () => {
   let sut: Ledger;
@@ -85,6 +86,50 @@ describe('Ledger service', () => {
       expect(result[7].depth).to.equal(3);
       expect(result[8].depth).to.equal(3);
       expect(result[9].depth).to.equal(2);
+    });
+  });
+
+  describe('edit ledger', () => {
+    let entityToEdit: Model;
+    let modificationPresentation: ModificationPresentation;
+
+    beforeEach(async () => {
+      await TestHelper.addManyToRepo<Model>(TestHelper.sampleLedgers(), repo);
+
+      entityToEdit = await repo.find(1);
+      const secondEntity = await repo.find(2);
+      secondEntity.parentLedgerID = 0;
+      secondEntity.name = 'Another ledger';
+      secondEntity.budgetID = 4;
+
+      modificationPresentation = new ModificationPresentation(
+        'modified ledger',
+        1,
+        0
+      );
+    });
+
+    it('should throw a ForbiddenError if a ledger does not belong to user', async () => {
+      // Arrange
+      modificationPresentation.id = 2;
+
+      // Act and assert
+      try {
+        await sut.editLedger(modificationPresentation, 1);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.instanceOf(ForbiddenError);
+      }
+    });
+
+    it('should edit ledger name and parent ledger.', async () => {
+      // Act
+      await sut.editLedger(modificationPresentation, 1);
+
+      // Assert
+      const modified = await repo.find(1);
+      expect(modified.name).to.equal('modified ledger');
+      expect(modified.parentLedgerID).to.equal(0);
     });
   });
 });

@@ -34,10 +34,12 @@ export class RepoStub<T extends Id> implements IRepository<T> {
   }
 
   public delete(id: number): void {
-    this.db.splice(id);
+    this.db.splice(id, 1);
   }
 
-  public update(entity: T): void {
-    throw new Error('not implemented');
+  public async update(entity: T): Promise<void> {
+    const found = await this.find(entity.id);
+    const index = this.db.indexOf(found);
+    this.db[index] = entity;
   }
 }
