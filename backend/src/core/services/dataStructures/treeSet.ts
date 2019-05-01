@@ -1,9 +1,10 @@
 import { TreeNode } from './treeNode';
+import { ISet } from './ISet';
 
 /**
  * Represents a generic tree that can have multiple children
  */
-export class TreeSet<K, V> {
+export class TreeSet<K, V> implements ISet<K, V> {
   private root: TreeNode<K, V>;
 
   public constructor(key: K, value: V) {
@@ -20,6 +21,7 @@ export class TreeSet<K, V> {
         this.root.children.push(node);
       }
     } else {
+      node.parent = this.root.key;
       this.root.children.push(node);
     }
   }
@@ -57,14 +59,19 @@ export class TreeSet<K, V> {
 
   public toArray(start?: TreeNode<K, V>, elements?: V[]): V[] {
     if (start) {
+      elements.push(start.value);
       for (const children of start.children) {
-        elements.push(...this.toArray(children, elements));
+        this.toArray(children, elements);
       }
 
       return elements;
     } else {
       return this.toArray(this.root, []);
     }
+  }
+
+  public count(): number {
+    return this.toArray().length;
   }
 
   private getNode(key: K, root?: TreeNode<K, V>): TreeNode<K, V> | undefined {

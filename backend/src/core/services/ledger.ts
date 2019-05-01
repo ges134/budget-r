@@ -45,7 +45,7 @@ export class Ledger {
     );
 
     if (budgetBelongsToUser) {
-      const ledgers = await this.repo.get({ userID });
+      const ledgers = await this.repo.get({ budgetID });
       const orderedList = this.orderedLedgers(ledgers);
       const result = orderedList.map(ledger =>
         this.addDepthToLedger(ledger, orderedList)
@@ -57,11 +57,15 @@ export class Ledger {
   }
 
   private orderedLedgers(ledgers: Model[]): Model[] {
-    const parentless = ledgers.filter(ledger =>
-      isNullOrUndefined(ledger.parentLedgerID)
+    const parentless = ledgers.filter(
+      ledger =>
+        isNullOrUndefined(ledger.parentLedgerID) || ledger.parentLedgerID === 0
     );
     const withParent = ledgers.filter(ledger => !parentless.includes(ledger));
     const tree = new ArrayTree<number, Model>();
+    for (const root of parentless) {
+      tree.add(root.id, root);
+    }
     this.bindLedgersToParents(tree, withParent);
     return tree.toArray();
   }
@@ -80,7 +84,7 @@ export class Ledger {
       roots.add(ledger.id, ledger, ledger.parentLedgerID);
     }
 
-    if (rest) {
+    if (rest.length) {
       this.bindLedgersToParents(roots, rest);
     }
   }

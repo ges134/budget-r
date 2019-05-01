@@ -1,7 +1,12 @@
 import { TreeSet } from './treeSet';
+import { ISet } from './ISet';
 
-export class ArrayTree<K, V> {
+export class ArrayTree<K, V> implements ISet<K, V> {
   private trees: Array<TreeSet<K, V>>;
+
+  public constructor() {
+    this.trees = [];
+  }
 
   public add(key: K, value: V, parent?: K) {
     if (parent) {
@@ -47,9 +52,20 @@ export class ArrayTree<K, V> {
 
   public toArray(): V[] {
     const result: V[] = [];
-    for (const tree of this.trees) {
+
+    this.trees.forEach(tree => {
       result.push(...tree.toArray());
-    }
+    });
+
+    return result;
+  }
+
+  public count(): number {
+    let result: number = 0;
+
+    this.trees.forEach(tree => {
+      result += tree.count();
+    });
 
     return result;
   }
