@@ -1,7 +1,6 @@
 import React, { Component, ReactNode } from 'react';
-import { AxiosWrapper, verbs } from '../../lib';
-import { Fetching } from './Fetching';
-import { ErrorAlert } from './ErrorAlert';
+import { AxiosWrapper, verbs, IAsync } from '../../lib';
+import { Fetching, ErrorAlert } from '../Async';
 import { IProps as EmptyListProps, EmptyList } from './EmptyList';
 import { ListGroup } from 'reactstrap';
 
@@ -15,13 +14,7 @@ interface IProps extends EmptyListProps {
   shouldFetch?: boolean;
 }
 
-interface IState {
-  isFetching: boolean;
-  hasResults: boolean;
-  errorMessage: string;
-}
-
-export class List extends Component<IProps, IState> {
+export class List extends Component<IProps, IAsync> {
   constructor(props: IProps) {
     super(props);
 
