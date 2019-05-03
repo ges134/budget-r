@@ -13,6 +13,25 @@ export class Ledgers {
     this.service = service || Factory.getInstance().ledger();
   }
 
+  public async get(req: Request, res: Response) {
+    try {
+      const { decoded } = req.headers;
+      const user = Token.getUserFromDecoded(decoded);
+
+      const { budgetID } = req.body;
+
+      const ledgers = await this.service.getLedgersForBudget(budgetID, user.id);
+
+      res.status(200).send(ledgers);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        res.status(error.errorCode).send(error.message);
+      } else {
+        res.status(500).send(error.message);
+      }
+    }
+  }
+
   public async put(req: Request, res: Response) {
     try {
       const { decoded } = req.headers;

@@ -1,4 +1,5 @@
 import { Ledger as Readonly } from '../models/presentations/readonly';
+import { ITreeItem } from '../../components';
 
 export class Helper {
   public static parentLedgerOptions(ledgers: Readonly[]): string[] {
@@ -23,5 +24,13 @@ export class Helper {
     }
 
     return results;
+  }
+
+  public static toTree(ledgers: Readonly[]): ITreeItem[] {
+    return ledgers.map(ledger => ({
+      key: ledger.id,
+      display: ledger.name,
+      depth: ledger.depth
+    }));
   }
 }

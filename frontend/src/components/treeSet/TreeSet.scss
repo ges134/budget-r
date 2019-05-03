@@ -9,3 +9,7 @@ $offsets: 12;
 }
 
 @include offset-x;
+
+.tree-item {
+  cursor: pointer;
+}

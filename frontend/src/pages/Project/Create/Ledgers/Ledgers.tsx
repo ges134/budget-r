@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { NeedsAuthentication } from '../../../../components/needsAuthenticaton';
 import { InProgress } from '../../../../components/InProgress';
-import { ProgressBar } from '../../../../components';
+import { ProgressBar, TreeSet } from '../../../../components';
 import { LedgerForm } from '../../../../forms';
-import { IAsync, AxiosWrapper, verbs } from '../../../../lib';
+import { IAsync, AxiosWrapper, verbs, LedgerHelper } from '../../../../lib';
 import { RouteComponentProps } from 'react-router';
 import { Ledger as Readonly } from '../../../../lib/models/presentations/readonly';
 import { Fetching, ErrorAlert } from '../../../../components/Async';
+import { Row, Col } from 'reactstrap';
 
 interface IParams {
   budgetID: string;
@@ -14,6 +15,7 @@ interface IParams {
 
 interface IState extends IAsync {
   ledgers: Readonly[];
+  selectedLedger?: Readonly;
 }
 
 export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
@@ -53,13 +55,29 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
       });
   };
 
+  public onLedgersClick = (event: MouseEvent<HTMLElement>, key: number) => {
+    const selectedLedger = this.state.ledgers.filter(
+      ledger => ledger.id === key
+    )[0];
+    this.setState({
+      selectedLedger
+    });
+  };
+
   public componentAccordingToState = () => {
     return this.state.isFetching ? (
       <Fetching />
     ) : this.state.errorMessage.length > 0 ? (
       <ErrorAlert message={this.state.errorMessage} />
     ) : (
-      <LedgerForm budgetID={this.budgetID()} ledgers={this.state.ledgers} />
+      <Row>
+        <Col md={8}>
+          <LedgerForm budgetID={this.budgetID()} ledgers={this.state.ledgers} />
+        </Col>
+        <Col md={4}>
+          <TreeSet items={LedgerHelper.toTree(this.state.ledgers)} />
+        </Col>
+      </Row>
     );
   };
 
