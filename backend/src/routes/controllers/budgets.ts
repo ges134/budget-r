@@ -11,7 +11,7 @@ export class Budgets {
       const user = Token.getUserFromDecoded(decoded);
       const budgets = Factory.getInstance()
         .budget()
-        .budgetsFromUser(user.id);
+        .budgetPresentationsFromUser(user.id);
 
       res.status(200).send(budgets);
     } catch (err) {

@@ -33,9 +33,8 @@ describe('Ledger service', () => {
       budgetRepo
     );
     estimateRepo = new RepoStub();
-
     estimateService = new Estimate(estimateRepo);
-    budgetService = new Budget(budgetRepo);
+    budgetService = new Budget(budgetRepo, sut, estimateService);
     sut = new Ledger(repo, budgetService, estimateService);
 
     presentation = new Presentation('Ledger', 1);
@@ -94,6 +93,39 @@ describe('Ledger service', () => {
       expect(result[7].depth).to.equal(3);
       expect(result[8].depth).to.equal(3);
       expect(result[9].depth).to.equal(2);
+    });
+  });
+
+  describe('child ledgers', () => {
+    beforeEach(async () => {
+      await TestHelper.addManyToRepo<Model>(TestHelper.sampleLedgers(), repo);
+    });
+
+    it('should throw a forbidden error if the budget id does not belong to user', async () => {
+      // Act and Assert
+      try {
+        await sut.childLedgers(1, 2);
+        expect.fail();
+      } catch (err) {
+        expect(err).to.be.an.instanceOf(ForbiddenError);
+      }
+    });
+
+    it('should give ledgers ordered by their parent and child', async () => {
+      // Act
+      const result = await sut.childLedgers(1, 1);
+
+      // Assert
+      // Expected array should have the following depths [1, 2, 2, 3, 3, 1, 2, 3, 3, 2]
+      expect(result.length).to.equal(4);
+      expect(result[0].depth).to.equal(3);
+      expect(result[1].depth).to.equal(3);
+      expect(result[2].depth).to.equal(3);
+      expect(result[3].depth).to.equal(3);
+      expect(result[0].id).to.equal(4);
+      expect(result[1].id).to.equal(5);
+      expect(result[2].id).to.equal(8);
+      expect(result[3].id).to.equal(9);
     });
   });
 

@@ -51,6 +51,23 @@ export class Ledger {
     return result;
   }
 
+  public async childLedgers(
+    budgetID: number,
+    userID: number
+  ): Promise<ReadOnlyPresentation[]> {
+    const ledgers = await this.getLedgersForBudget(budgetID, userID);
+    const results: ReadOnlyPresentation[] = [];
+    const parentLedgerIDs = ledgers.map(ledger => ledger.parentLedgerID);
+
+    for (const ledger of ledgers) {
+      if (!parentLedgerIDs.includes(ledger.id)) {
+        results.push(ledger);
+      }
+    }
+
+    return results;
+  }
+
   public async editLedger(
     ledger: ModificationPresentation,
     userID: number
@@ -121,6 +138,7 @@ export class Ledger {
     }
 
     return new ReadOnlyPresentation(
+      ledger.id,
       ledger.name,
       ledger.budgetID,
       depth,
