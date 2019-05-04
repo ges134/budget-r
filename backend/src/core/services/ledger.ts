@@ -1,35 +1,39 @@
 import { IRepository, Repository } from '../dal';
 import { Ledger as Model } from '../models';
 import { Ledger as Presentation } from '../../models-folder';
-import { Budget } from './budget';
-import { ForbiddenError } from '../../routes/errors/forbiddenError';
 import { Ledger as ReadOnlyPresentation } from '../../models-folder/presentations/readonly';
 import { isNullOrUndefined } from 'util';
 import { ArrayTree } from './dataStructures';
 import { Ledger as ModificationPresentation } from '../../models-folder/presentations/modification';
 import { Estimate } from './estimate';
 import { ConflictError } from '../../routes/errors';
+import { Security } from './security';
+import { Factory } from './factory';
 
 export class Ledger {
   private repo: IRepository<Model>;
-  private budget: Budget;
   private estimate: Estimate;
+  private security: Security;
 
   public constructor(
     repo?: IRepository<Model>,
-    budget?: Budget,
-    estimate?: Estimate
+    estimate?: Estimate,
+    security?: Security
   ) {
+    const factory = Factory.getInstance();
     this.repo = repo || new Repository<Model>(Model.tableName);
-    this.budget = budget || new Budget();
-    this.estimate = estimate || new Estimate();
+    this.estimate = estimate || factory.estimate();
+    this.security = security || factory.security();
   }
 
   public async addLedger(
     presentation: Presentation,
     userID: number
   ): Promise<number> {
-    await this.throwIfBudgetDoesNotBelongToUser(presentation.budgetID, userID);
+    await this.security.throwIfBudgetDoesNotBelongToUser(
+      presentation.budgetID,
+      userID
+    );
 
     const { name, budgetID, parentLedgerID } = presentation;
     const model = new Model(name, budgetID, parentLedgerID);
@@ -41,7 +45,7 @@ export class Ledger {
     budgetID: number,
     userID: number
   ): Promise<ReadOnlyPresentation[]> {
-    await this.throwIfBudgetDoesNotBelongToUser(budgetID, userID);
+    await this.security.throwIfBudgetDoesNotBelongToUser(budgetID, userID);
 
     const ledgers = await this.repo.get({ budgetID });
     const orderedList = this.orderedLedgers(ledgers);
@@ -51,12 +55,29 @@ export class Ledger {
     return result;
   }
 
+  public async childLedgers(
+    budgetID: number,
+    userID: number
+  ): Promise<ReadOnlyPresentation[]> {
+    const ledgers = await this.getLedgersForBudget(budgetID, userID);
+    const results: ReadOnlyPresentation[] = [];
+    const parentLedgerIDs = ledgers.map(ledger => ledger.parentLedgerID);
+
+    for (const ledger of ledgers) {
+      if (!parentLedgerIDs.includes(ledger.id)) {
+        results.push(ledger);
+      }
+    }
+
+    return results;
+  }
+
   public async editLedger(
     ledger: ModificationPresentation,
     userID: number
   ): Promise<void> {
     const model = await this.repo.find(ledger.id);
-    await this.throwIfLedgerDoesNotBelongToUser(model, userID);
+    await this.security.throwIfLedgerDoesNotBelongToUser(model, userID);
     model.name = ledger.name;
     model.parentLedgerID = ledger.parentLedgerID;
     await this.repo.update(model);
@@ -64,7 +85,7 @@ export class Ledger {
 
   public async deleteLedger(ledgerID: number, userID: number): Promise<void> {
     const model = await this.repo.find(ledgerID);
-    await this.throwIfLedgerDoesNotBelongToUser(model, userID);
+    await this.security.throwIfLedgerDoesNotBelongToUser(model, userID);
 
     const hasEstimates = await this.estimate.ledgerHasEstimates(ledgerID);
     if (hasEstimates) {
@@ -121,38 +142,11 @@ export class Ledger {
     }
 
     return new ReadOnlyPresentation(
+      ledger.id,
       ledger.name,
       ledger.budgetID,
       depth,
       ledger.parentLedgerID
     );
-  }
-
-  private async throwIfBudgetDoesNotBelongToUser(
-    budgetID: number,
-    userID: number
-  ) {
-    const belongs = await this.budget.budgetBelongsToUser(budgetID, userID);
-    if (!belongs) {
-      throw new ForbiddenError();
-    }
-  }
-
-  private async throwIfLedgerDoesNotBelongToUser(
-    ledger: Model,
-    userID: number
-  ) {
-    const budgets = await this.budget.budgetsFromUser(userID);
-    let found = false;
-    for (const budget of budgets) {
-      if (ledger.budgetID === budget.id) {
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      throw new ForbiddenError();
-    }
   }
 }
