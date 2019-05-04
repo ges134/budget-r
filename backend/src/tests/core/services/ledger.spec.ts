@@ -1,5 +1,5 @@
 import 'mocha';
-import { Ledger, Budget, Estimate } from '../../../core/services';
+import { Ledger, Estimate, Security } from '../../../core/services';
 import { IRepository } from '../../../core/dal';
 import {
   Ledger as Model,
@@ -17,11 +17,11 @@ describe('Ledger service', () => {
   let sut: Ledger;
   let repo: IRepository<Model>;
 
-  let budgetService: Budget;
   let budgetRepo: IRepository<BudgetModel>;
+  let estimateRepo: IRepository<EstimateModel>;
 
   let estimateService: Estimate;
-  let estimateRepo: IRepository<EstimateModel>;
+  let securityService: Security;
 
   let presentation: Presentation;
 
@@ -34,8 +34,8 @@ describe('Ledger service', () => {
     );
     estimateRepo = new RepoStub();
     estimateService = new Estimate(estimateRepo);
-    budgetService = new Budget(budgetRepo, sut, estimateService);
-    sut = new Ledger(repo, budgetService, estimateService);
+    securityService = new Security(budgetRepo, repo, estimateRepo);
+    sut = new Ledger(repo, estimateService, securityService);
 
     presentation = new Presentation('Ledger', 1);
   });
@@ -117,15 +117,19 @@ describe('Ledger service', () => {
 
       // Assert
       // Expected array should have the following depths [1, 2, 2, 3, 3, 1, 2, 3, 3, 2]
-      expect(result.length).to.equal(4);
-      expect(result[0].depth).to.equal(3);
+      expect(result.length).to.equal(6);
+      expect(result[0].depth).to.equal(2);
       expect(result[1].depth).to.equal(3);
       expect(result[2].depth).to.equal(3);
       expect(result[3].depth).to.equal(3);
-      expect(result[0].id).to.equal(4);
-      expect(result[1].id).to.equal(5);
-      expect(result[2].id).to.equal(8);
-      expect(result[3].id).to.equal(9);
+      expect(result[4].depth).to.equal(3);
+      expect(result[5].depth).to.equal(2);
+      expect(result[0].id).to.equal(2);
+      expect(result[1].id).to.equal(4);
+      expect(result[2].id).to.equal(5);
+      expect(result[3].id).to.equal(8);
+      expect(result[4].id).to.equal(9);
+      expect(result[5].id).to.equal(10);
     });
   });
 

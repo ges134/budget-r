@@ -1,5 +1,5 @@
 import 'mocha';
-import { Budget, Estimate, Ledger } from '../../../core/services';
+import { Budget, Estimate, Ledger, Security } from '../../../core/services';
 import { IRepository } from '../../../core/dal';
 import {
   Budget as Model,
@@ -20,40 +20,25 @@ describe('Budget service', () => {
 
   let estimateService: Estimate;
   let ledgerService: Ledger;
+  let securityService: Security;
 
   beforeEach(async () => {
     repo = new RepoStub();
     estimateRepo = new RepoStub();
     ledgerRepo = new RepoStub();
 
-    estimateService = new Estimate();
-    ledgerService = new Ledger(ledgerRepo); // FIXME: Initialize properly.
+    estimateService = new Estimate(estimateRepo);
+    securityService = new Security(repo, ledgerRepo, estimateRepo);
+    ledgerService = new Ledger(ledgerRepo, estimateService, securityService);
 
     sut = new Budget(repo, ledgerService, estimateService);
     await TestHelper.addManyToRepo<Model>(TestHelper.sampleBudgets(), repo);
-  });
-
-  describe('budgets from user', () => {
-    it('should return all budgets from user', async () => {
-      // Arrange
-      const id = 1;
-
-      // Act
-      const result = await sut.budgetsFromUser(id);
-
-      // Assert
-      expect(result).to.have.lengthOf(2);
-      expect(result[0].userID).to.equal(id);
-      expect(result[1].userID).to.equal(id);
-    });
   });
 
   describe('budget presentations from user', () => {
     it('should return all budget presentations from user', async () => {
       // Arrange
       const id = 1;
-      const ledgerRepo = new RepoStub<LedgerModel>();
-      const estimateRepo = new RepoStub<EstimateModel>();
       await ledgerRepo.add(new LedgerModel('ledger', 1, 1));
       await estimateRepo.add(new EstimateModel(2019, 0, 100, 1, 1));
 
@@ -90,24 +75,6 @@ describe('Budget service', () => {
       expect(created.startDate.getFullYear()).to.equal(
         expectedDate.getFullYear()
       );
-    });
-  });
-
-  describe('budget belongs to user', () => {
-    it('should return true if it belongs to the user', async () => {
-      // Act
-      const result = await sut.budgetBelongsToUser(1, 1);
-
-      // Assert
-      expect(result).to.be.true; // tslint:disable-line
-    });
-
-    it('should return false if it does not belongs to the user', async () => {
-      // Act
-      const result = await sut.budgetBelongsToUser(1, 2);
-
-      // Assert
-      expect(result).to.be.false; // tslint:disable-line
     });
   });
 });

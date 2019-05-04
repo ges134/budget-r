@@ -2,7 +2,7 @@ import { HttpError } from './httpError';
 
 export class ForbiddenError extends HttpError {
   public static readonly genericErrorMessage: string =
-    'The username/email and password does not match';
+    'You do not have the permissions';
 
   constructor(message?: string) {
     super(message || ForbiddenError.genericErrorMessage, 403);

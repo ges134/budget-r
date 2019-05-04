@@ -25,15 +25,10 @@ export class Budget {
     this.estimateService = estimateService || serviceFactory.estimate();
   }
 
-  public async budgetsFromUser(userID: number): Promise<Model[]> {
-    const budgets = await this.repo.get({ userID });
-    return budgets;
-  }
-
   public async budgetPresentationsFromUser(
     userID: number
   ): Promise<Readonly[]> {
-    const budgets = await this.budgetsFromUser(userID);
+    const budgets = await this.repo.get({ userID });
     const presentations: Readonly[] = [];
 
     for (const budget of budgets) {
@@ -64,21 +59,6 @@ export class Budget {
     const model = new Model(startDate, userID, name, description);
     const id = await this.repo.add(model);
     return id;
-  }
-
-  public async budgetBelongsToUser(
-    budgetID: number,
-    userID: number
-  ): Promise<boolean> {
-    const budgets = await this.budgetsFromUser(userID);
-
-    for (const budget of budgets) {
-      if (budget.id === budgetID) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   private async budgetCompletion(
