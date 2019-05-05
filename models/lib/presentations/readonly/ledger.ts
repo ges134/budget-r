@@ -6,7 +6,6 @@ export class Ledger implements Common {
     public name: string,
     public budgetID: number,
     public depth: number,
-    public id: number,
     public parentLedgerID?: number
   ) {}
 }
