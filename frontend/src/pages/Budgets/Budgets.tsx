@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { NeedsAuthentication } from '../../components/needsAuthenticaton';
 import { InProgress } from '../../components/InProgress';
-import { Budget } from '../../lib/models';
+import { Budget } from '../../lib/models/presentations/readonly';
 import { List } from '../../components/List';
 import { faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -9,28 +9,66 @@ import {
   Row,
   Col,
   ListGroupItemHeading,
-  ListGroupItemText
+  ListGroupItemText,
+  Progress
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-interface IState {
-  budgets: Budget[];
-}
+import './Budgets.scss';
 
-export class Budgets extends Component<any, IState> {
+export class Budgets extends Component {
   public constructor(props: any) {
     super(props);
-
-    this.state = {
-      budgets: []
-    };
   }
 
-  public onItemsFetched(data: any[]) {
-    const budgets = (data as unknown) as Budget[];
-    this.setState({
-      budgets
-    });
-  }
+  public buildLink = (budget: Budget): string => {
+    const baseUrl = '/project/create';
+    switch (budget.progress.step) {
+      case 1:
+        return `${baseUrl}/ledgers/${budget.id}`;
+      case 2:
+        return `${baseUrl}/estimates/${budget.id}`;
+      default:
+        // TODO: make a link to get to the budget details page.
+        return 'to be determined';
+    }
+  };
+
+  public budgetIsComplete = (budget: Budget): boolean =>
+    this.budgetProgression(budget) === 1;
+
+  public budgetProgression = (budget: Budget): number => {
+    const { step, outOf } = budget.progress;
+    return step / outOf;
+  };
+
+  public renderListItems = (data: any[]): ReactNode => {
+    const budgets = data as Budget[];
+
+    return (
+      <>
+        {budgets.map(budget => (
+          <ListGroupItem key={budget.id}>
+            <Row>
+              <Col md={10}>
+                <Link to={this.buildLink(budget)} className="link">
+                  <ListGroupItemHeading>{budget.name}</ListGroupItemHeading>
+                  <ListGroupItemText>{budget.description}</ListGroupItemText>
+                </Link>
+              </Col>
+              <Col md={2}>
+                {this.budgetIsComplete(budget) ? (
+                  <p>The status will come soon!</p>
+                ) : (
+                  <Progress value={this.budgetProgression(budget) * 100} />
+                )}
+              </Col>
+            </Row>
+          </ListGroupItem>
+        ))}
+      </>
+    );
+  };
 
   public render() {
     return (
@@ -39,24 +77,13 @@ export class Budgets extends Component<any, IState> {
         <InProgress />
         <List
           fetchURL="/budgets"
-          onItemsFetched={this.onItemsFetched}
+          renderContent={this.renderListItems}
           emptyMessage="Oh no! Seems like you have no budgeting project!"
           createLink="/project/create/budget"
           icon={faFileInvoiceDollar}
-        >
-          {this.state.budgets.map(budget => (
-            // TODO: make a link to get to the budget details page.
-            <ListGroupItem>
-              <Row>
-                <Col md={10}>
-                  <ListGroupItemHeading>{budget.name}</ListGroupItemHeading>
-                  <ListGroupItemText>{budget.description}</ListGroupItemText>
-                </Col>
-                <Col md={2}>more to come!</Col>
-              </Row>
-            </ListGroupItem>
-          ))}
-        </List>
+          shouldFetch
+          newText="New budgetting project"
+        />
       </NeedsAuthentication>
     );
   }

@@ -3,12 +3,12 @@ import { AxiosWrapper, verbs } from '../../lib';
 import { Fetching } from './Fetching';
 import { ErrorAlert } from './ErrorAlert';
 import { IProps as EmptyListProps, EmptyList } from './EmptyList';
-import { ListGroup } from 'reactstrap';
+import { ListGroup, Button } from 'reactstrap';
 
 interface IProps extends EmptyListProps {
-  children: ReactNode;
   fetchURL: string;
-  onItemsFetched: (data: any[]) => void;
+  renderContent: (data: any[]) => ReactNode;
+  newText: string;
   /**
    * It's only used in order to avoid axios calls in tests.
    */
@@ -17,8 +17,8 @@ interface IProps extends EmptyListProps {
 
 interface IState {
   isFetching: boolean;
-  hasResults: boolean;
   errorMessage: string;
+  data: any[];
 }
 
 export class List extends Component<IProps, IState> {
@@ -27,7 +27,8 @@ export class List extends Component<IProps, IState> {
 
     const baseState = {
       hasResults: false,
-      errorMessage: ''
+      errorMessage: '',
+      data: []
     };
 
     if (props.shouldFetch) {
@@ -51,18 +52,15 @@ export class List extends Component<IProps, IState> {
         const { data } = res;
 
         this.setState({
-          hasResults: data.length > 0
+          isFetching: false,
+          data
         });
-
-        this.props.onItemsFetched(data);
       })
       .catch(err => {
         this.setState({
-          errorMessage: err
+          errorMessage: err,
+          isFetching: false
         });
-      })
-      .finally(() => {
-        this.setState({ isFetching: false });
       });
   };
 
@@ -71,8 +69,15 @@ export class List extends Component<IProps, IState> {
       <Fetching />
     ) : this.state.errorMessage.length > 0 ? (
       <ErrorAlert message={this.state.errorMessage} />
-    ) : this.state.hasResults ? (
-      <ListGroup flush>{this.props.children}</ListGroup>
+    ) : this.state.data.length > 0 ? (
+      <>
+        <Button type="button" color="primary">
+          {this.props.newText}
+        </Button>
+        <ListGroup flush className="mt-3">
+          {this.props.renderContent(this.state.data)}
+        </ListGroup>
+      </>
     ) : (
       <EmptyList
         emptyMessage={this.props.emptyMessage}
