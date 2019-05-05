@@ -146,7 +146,6 @@ export class Ledger {
       ledger.name,
       ledger.budgetID,
       depth,
-      ledger.id,
       ledger.parentLedgerID
     );
   }

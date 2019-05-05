@@ -7,7 +7,11 @@ import { IAsync, AxiosWrapper, verbs, LedgerHelper } from '../../../../lib';
 import { RouteComponentProps } from 'react-router';
 import { Ledger as Readonly } from '../../../../lib/models/presentations/readonly';
 import { Fetching, ErrorAlert } from '../../../../components/Async';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
+import { CardWrapper } from '../../../../components/CardWrapper';
+
+import './Ledgers.scss';
+import { Link } from 'react-router-dom';
 
 interface IParams {
   budgetID: string;
@@ -70,14 +74,25 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
     ) : this.state.errorMessage.length > 0 ? (
       <ErrorAlert message={this.state.errorMessage} />
     ) : (
-      <Row>
-        <Col md={8}>
-          <LedgerForm budgetID={this.budgetID()} ledgers={this.state.ledgers} />
-        </Col>
-        <Col md={4}>
-          <TreeSet items={LedgerHelper.toTree(this.state.ledgers)} />
-        </Col>
-      </Row>
+      <>
+        <Row>
+          <Col md={8}>
+            <LedgerForm
+              budgetID={this.budgetID()}
+              ledgers={this.state.ledgers}
+            />
+          </Col>
+          <Col md={4} className="d-flex align-item-stretch card-button">
+            <CardWrapper header="your ledgers">
+              {this.state.ledgers.length ? (
+                <TreeSet items={LedgerHelper.toTree(this.state.ledgers)} />
+              ) : (
+                <p>Once created, your ledgers will appear here</p>
+              )}
+            </CardWrapper>
+          </Col>
+        </Row>
+      </>
     );
   };
 
@@ -87,7 +102,21 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
         <NeedsAuthentication>
           <div className="mt-2" />
           <InProgress />
-          <ProgressBar value={33} stepText="Ledger creation" />
+          <Row>
+            <Col md={8}>
+              <ProgressBar value={33} stepText="Ledger creation" />
+            </Col>
+            <Col md={4} className="text-right">
+              <Link
+                to={`project/create/estimates/${
+                  this.props.match.params.budgetID
+                }`}
+                className="btn btn-primary"
+              >
+                Ready? Click here to give estimates
+              </Link>
+            </Col>
+          </Row>
           {this.componentAccordingToState()}
         </NeedsAuthentication>
       </>

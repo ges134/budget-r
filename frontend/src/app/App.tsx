@@ -11,7 +11,7 @@ import { Login } from '../pages/Login/Login';
 import { AxiosWrapper, verbs } from '../lib';
 import { cookieName } from '../lib/constants';
 import Cookies from 'js-cookie';
-import { Budget } from '../routes';
+import { Budget, Project } from '../routes';
 
 interface IState {
   isFetchingUser: boolean;
@@ -75,6 +75,7 @@ export class App extends Component<any, IState> {
               <Route path="/ledgers" component={Ledgers} />
               <Route path="/signup" component={SignUp} />
               <Route path="/login" component={Login} />
+              <Route path="/project" component={Project} />
               <Route path="*" component={NotFound} />
             </Switch>
           </Layout>

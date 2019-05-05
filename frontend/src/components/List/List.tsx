@@ -2,12 +2,14 @@ import React, { Component, ReactNode } from 'react';
 import { AxiosWrapper, verbs, IAsync } from '../../lib';
 import { Fetching, ErrorAlert } from '../Async';
 import { IProps as EmptyListProps, EmptyList } from './EmptyList';
-import { ListGroup, Button } from 'reactstrap';
+import { ListGroup } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 interface IProps extends EmptyListProps {
   fetchURL: string;
   renderContent: (data: any[]) => ReactNode;
   newText: string;
+  newLink: string;
   /**
    * It's only used in order to avoid axios calls in tests.
    */
@@ -68,9 +70,9 @@ export class List extends Component<IProps, IState> {
       <ErrorAlert message={this.state.errorMessage} />
     ) : this.state.data.length > 0 ? (
       <>
-        <Button type="button" color="primary">
+        <Link to={this.props.newLink} className="btn btn-primary">
           {this.props.newText}
-        </Button>
+        </Link>
         <ListGroup flush className="mt-3">
           {this.props.renderContent(this.state.data)}
         </ListGroup>
