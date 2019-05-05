@@ -9,7 +9,7 @@ export class Budgets {
     try {
       const { decoded } = req.headers;
       const user = Token.getUserFromDecoded(decoded);
-      const budgets = Factory.getInstance()
+      const budgets = await Factory.getInstance()
         .budget()
         .budgetPresentationsFromUser(user.id);
 
