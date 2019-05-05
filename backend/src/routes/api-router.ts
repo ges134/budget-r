@@ -43,8 +43,10 @@ export function apiRouter(): express.Router {
     .put(checkToken, budgets.put);
   router
     .route('/ledgers')
+    .get(checkToken, ledgers.get)
     .put(checkToken, ledgers.put)
-    .post(checkToken, ledgers.post);
+    .post(checkToken, ledgers.post)
+    .delete(checkToken, ledgers.delete);
 
   return router;
 }

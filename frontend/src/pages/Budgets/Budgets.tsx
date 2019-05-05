@@ -83,6 +83,7 @@ export class Budgets extends Component {
           icon={faFileInvoiceDollar}
           shouldFetch
           newText="New budgetting project"
+          newLink="project/create/budget"
         />
       </NeedsAuthentication>
     );

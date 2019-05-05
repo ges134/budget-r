@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
 import './TreeSet.scss';
@@ -11,6 +11,7 @@ export interface ITreeItem {
 
 interface IProps {
   items: ITreeItem[];
+  onClick?: (event: MouseEvent<HTMLElement>, key: number) => void;
 }
 
 /**
@@ -35,12 +36,32 @@ interface IProps {
  *        -> 3
  *   -> 2
  */
-export const TreeSet = (props: IProps) => (
-  <ListGroup flush>
-    {props.items.map(item => (
-      <ListGroupItem className={`space-${item.depth}`} key={item.key}>
-        {item.display}
-      </ListGroupItem>
-    ))}
-  </ListGroup>
-);
+export class TreeSet extends Component<IProps> {
+  public constructor(props: IProps) {
+    super(props);
+  }
+
+  public render() {
+    return (
+      <ListGroup flush>
+        {this.props.items.map(item => {
+          const onClick = (event: MouseEvent<HTMLElement>) => {
+            if (this.props.onClick) {
+              this.props.onClick(event, item.key);
+            }
+          };
+          return (
+            <ListGroupItem
+              className={`space-${item.depth} tree-item`}
+              key={item.key}
+              action
+              onClick={onClick}
+            >
+              {item.display}
+            </ListGroupItem>
+          );
+        })}
+      </ListGroup>
+    );
+  }
+}
