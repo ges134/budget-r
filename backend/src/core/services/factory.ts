@@ -4,6 +4,7 @@ import { Authentication } from './authentication';
 import { Budget } from './budget';
 import { Ledger } from './ledger';
 import { Estimate } from './estimate';
+import { Security } from './security';
 
 export class Factory {
   public static getInstance() {
@@ -21,6 +22,7 @@ export class Factory {
   private budgetInstance: Budget;
   private ledgerInstance: Ledger;
   private estimateInstance: Estimate;
+  private securityInstance: Security;
 
   private constructor() {}
 
@@ -62,5 +64,13 @@ export class Factory {
     }
 
     return this.estimateInstance;
+  }
+
+  public security(): Security {
+    if (isNullOrUndefined(this.securityInstance)) {
+      this.securityInstance = new Security();
+    }
+
+    return this.securityInstance;
   }
 }

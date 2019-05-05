@@ -1,6 +1,5 @@
 import { Budget, Id, Ledger, Estimate } from '../core/models';
 import { IRepository } from '../core/dal';
-import { reporters } from 'mocha';
 
 export class TestHelper {
   public static sampleBudgets(): Budget[] {
@@ -64,6 +63,32 @@ export class TestHelper {
     }
 
     return sample;
+  }
+
+  public static async estimatesForLedgers(
+    ledgers: Ledger[],
+    repo: IRepository<Estimate>
+  ) {
+    const parentLedgerIDs = ledgers.map(ledger => ledger.parentLedgerID);
+    let ids = 1;
+    const today = new Date();
+
+    for (const ledger of ledgers) {
+      if (!parentLedgerIDs.includes(ledger.id)) {
+        for (let i = ids; i < ids + 12; i++) {
+          await repo.add(
+            new Estimate(
+              today.getFullYear(),
+              today.getMonth(),
+              100,
+              i,
+              ledger.id
+            )
+          );
+        }
+        ids += 12;
+      }
+    }
   }
 
   public static async addManyToRepo<T extends Id>(

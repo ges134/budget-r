@@ -9,9 +9,9 @@ export class Budgets {
     try {
       const { decoded } = req.headers;
       const user = Token.getUserFromDecoded(decoded);
-      const budgets = Factory.getInstance()
+      const budgets = await Factory.getInstance()
         .budget()
-        .budgetsFromUser(user.id);
+        .budgetPresentationsFromUser(user.id);
 
       res.status(200).send(budgets);
     } catch (err) {

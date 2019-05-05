@@ -1,0 +1,9 @@
+@import '../../custom.scss';
+
+.link {
+  color: $bg;
+
+  &:hover {
+    color: lighten($bg, 15%)
+  }
+}

@@ -5,20 +5,19 @@ import BaseCase from '../../lib/Tests/BaseCase';
 import { shallow } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-const onItemsFetched = () => {};
+const renderItems = () => <li>the content of the list</li>;
 
 const getComponent = () => (
   <Router>
     <List
       fetchURL="/"
-      onItemsFetched={onItemsFetched}
       emptyMessage="It's empty!"
       createLink="/create"
       icon={faBook}
       shouldFetch={false}
-    >
-      <li>item</li>
-    </List>
+      newText="New"
+      renderContent={renderItems}
+    />
   </Router>
 );
 
@@ -77,7 +76,7 @@ describe('List', () => {
     // Act
     rendered.setState({
       errorMessage: '',
-      hasResults: true
+      data: ['hello']
     });
 
     // Assert
