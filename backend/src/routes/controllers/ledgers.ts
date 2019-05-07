@@ -5,12 +5,18 @@ import { Ledger as Presentation } from '../../models-folder';
 import { ValidationError } from 'yup';
 import { HttpError } from '../errors/httpError';
 import { Ledger as PresentationModification } from '../../models-folder/presentations/modification';
+import { BadRequestError } from '../errors';
 
 export class Ledgers {
   private service: Service;
 
   public constructor(service?: Service) {
     this.service = service || Factory.getInstance().ledger();
+
+    this.get = this.get.bind(this);
+    this.put = this.put.bind(this);
+    this.post = this.post.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   public async get(req: Request, res: Response) {
@@ -18,7 +24,17 @@ export class Ledgers {
       const { decoded } = req.headers;
       const user = Token.getUserFromDecoded(decoded);
 
-      const { budgetID } = req.body;
+      let { budgetID } = req.body;
+
+      if (budgetID === undefined || budgetID === null) {
+        budgetID = req.query.budgetID;
+
+        if (budgetID === undefined || budgetID === null) {
+          throw new BadRequestError('Missing budget identifier.');
+        }
+      }
+
+      budgetID = Number.parseInt(budgetID, 10);
 
       const ledgers = await this.service.getLedgersForBudget(budgetID, user.id);
 

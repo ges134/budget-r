@@ -54,10 +54,7 @@ export class AxiosWrapper {
   }
 
   private get(url: string, data?: any): AxiosPromise<any> {
-    return axios.get(
-      `${this.urlCombined(url)}?${this.encodeData(data)}`,
-      this.configWithToken()
-    );
+    return axios.get(this.urlCombined(url), this.configForGet(data));
   }
 
   /**
@@ -83,21 +80,10 @@ export class AxiosWrapper {
     };
   }
 
-  private encodeData(data?: any): string {
-    let encoded = '';
-    if (data) {
-      const props = [];
-      for (const prop in data) {
-        if (data.hasOwnProperty(prop)) {
-          props.push(
-            `${encodeURIComponent(prop)}=${encodeURIComponent(data[prop])}`
-          );
-        }
-      }
+  private configForGet(data?: any): any {
+    const config = this.configWithToken();
+    config.params = { ...data };
 
-      encoded = props.join('&');
-    }
-
-    return encoded;
+    return config;
   }
 }
