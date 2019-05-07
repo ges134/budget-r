@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc -w",
     "ci:build": "tsc --listFiles",
-    "start": "npm run server",
+    "start": "yarn server",
     "server": "nodemon dist/server.js",
     "test": "ts-mocha src/**/*.spec.ts",
     "test:watch": "ts-mocha src/**/*.spec.ts --watch",
