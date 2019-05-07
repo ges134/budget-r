@@ -52,6 +52,7 @@ export class Ledger {
     const result = orderedList.map(ledger =>
       this.addDepthToLedger(ledger, orderedList)
     );
+
     return result;
   }
 

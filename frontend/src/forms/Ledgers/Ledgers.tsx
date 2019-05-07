@@ -8,6 +8,7 @@ import { Ledger as Readonly } from '../../lib/models/presentations/readonly';
 interface IProps {
   budgetID: number;
   ledgers?: Readonly[];
+  onSuccess: (res: any) => void;
 }
 
 export class Ledgers extends Component<IProps> {
@@ -54,6 +55,7 @@ export class Ledgers extends Component<IProps> {
         submitUrl="/ledgers"
         verb={verbs.put}
         formIsReturnigId
+        onSuccess={this.props.onSuccess}
       >
         <CardWrapper header="Let's add some ledgers">
           <p>
