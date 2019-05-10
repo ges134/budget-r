@@ -2,6 +2,8 @@ import React from 'react';
 import { Ledgers } from './Ledgers';
 import BaseCase from '../../lib/Tests/BaseCase';
 
+const onSuccess = () => {}; // tslint:disable-line
+
 const getComponent = (withLedgers?: boolean) => {
   if (withLedgers) {
     return (
@@ -15,11 +17,12 @@ const getComponent = (withLedgers?: boolean) => {
             depth: 1
           }
         ]}
+        onSuccess={onSuccess}
       />
     );
   }
 
-  return <Ledgers budgetID={1} />;
+  return <Ledgers budgetID={1} onSuccess={onSuccess} />;
 };
 
 describe('Budget form', () => {
