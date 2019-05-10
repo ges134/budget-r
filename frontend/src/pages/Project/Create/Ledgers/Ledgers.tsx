@@ -40,6 +40,10 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
     return parseInt(this.props.match.params.budgetID, 10);
   };
 
+  public onSuccess = () => {
+    this.fetch();
+  };
+
   public fetch = () => {
     AxiosWrapper.getInstance()
       .request(verbs.get, '/ledgers', { budgetID: this.budgetID() })
@@ -80,6 +84,7 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
             <LedgerForm
               budgetID={this.budgetID()}
               ledgers={this.state.ledgers}
+              onSuccess={this.onSuccess}
             />
           </Col>
           <Col md={4} className="d-flex align-item-stretch card-button">

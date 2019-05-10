@@ -17,6 +17,7 @@ const getComponent = () => (
       shouldFetch={false}
       newText="New"
       renderContent={renderItems}
+      newLink="/new"
     />
   </Router>
 );

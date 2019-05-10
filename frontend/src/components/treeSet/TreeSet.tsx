@@ -52,7 +52,7 @@ export class TreeSet extends Component<IProps> {
           };
           return (
             <ListGroupItem
-              className={`space-${item.depth} tree-item`}
+              className={`space-${item.depth - 1} tree-item`}
               key={item.key}
               action
               onClick={onClick}
