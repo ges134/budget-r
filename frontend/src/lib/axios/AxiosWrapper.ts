@@ -24,13 +24,22 @@ export class AxiosWrapper {
 
   private static instance: AxiosWrapper;
 
-  private config = {
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  };
+  private abort: AbortController;
+  private config: any;
 
-  private constructor() {}
+  private constructor() {
+    this.abort = new AbortController();
+    this.config = {
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      signal: this.abort.signal
+    };
+  }
+
+  public cancel() {
+    this.abort.abort();
+  }
 
   public request(verb: verbs, url: string, data?: any): AxiosPromise<any> {
     switch (verb) {
@@ -69,15 +78,11 @@ export class AxiosWrapper {
   }
 
   private configWithToken(): any {
-    const { headers } = this.config;
     const token = Cookies.get(cookieName);
 
-    return {
-      headers: {
-        ...headers,
-        Authorization: token
-      }
-    };
+    this.config.headers.Authorization = token;
+
+    return this.config;
   }
 
   private configForGet(data?: any): any {

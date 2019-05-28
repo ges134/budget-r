@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export const CardWrapper = (props: IProps) => (
-  <Card className={`my-2 ${props.className}`}>
+  <Card className={`my-2 w-100 ${props.className}`}>
     <CardHeader>{props.header}</CardHeader>
     <CardBody>{props.children}</CardBody>
   </Card>

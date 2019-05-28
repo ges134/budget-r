@@ -1,11 +1,8 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import { serverConfig } from './config';
-import KnexWrapper from './core/dal/KnexWrapper';
 import { apiRouter } from './routes';
 import cors from 'cors';
-
-KnexWrapper.getInstance();
 
 const app = express();
 

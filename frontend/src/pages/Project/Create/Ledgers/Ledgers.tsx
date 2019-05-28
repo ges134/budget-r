@@ -9,9 +9,9 @@ import { Ledger as Readonly } from '../../../../lib/models/presentations/readonl
 import { Fetching, ErrorAlert } from '../../../../components/Async';
 import { Row, Col, Button } from 'reactstrap';
 import { CardWrapper } from '../../../../components/CardWrapper';
+import { Link } from 'react-router-dom';
 
 import './Ledgers.scss';
-import { Link } from 'react-router-dom';
 
 interface IParams {
   budgetID: string;
@@ -32,8 +32,6 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
       isFetching: true,
       ledgers: []
     };
-
-    this.fetch();
   }
 
   public budgetID = () => {
@@ -88,9 +86,12 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
             />
           </Col>
           <Col md={4} className="d-flex align-item-stretch card-button">
-            <CardWrapper header="your ledgers">
+            <CardWrapper header="your ledgers" className="ledgers">
               {this.state.ledgers.length ? (
-                <TreeSet items={LedgerHelper.toTree(this.state.ledgers)} />
+                <TreeSet
+                  items={LedgerHelper.toTree(this.state.ledgers)}
+                  onClick={this.onLedgersClick}
+                />
               ) : (
                 <p>Once created, your ledgers will appear here</p>
               )}
@@ -100,6 +101,14 @@ export class Ledgers extends Component<RouteComponentProps<IParams>, IState> {
       </>
     );
   };
+
+  public componentDidMount() {
+    this.fetch();
+  }
+
+  public componentWillUnmount() {
+    AxiosWrapper.getInstance().cancel();
+  }
 
   public render() {
     return (
