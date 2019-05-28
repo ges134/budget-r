@@ -1,19 +1,16 @@
-import Knex from "knex";
-import KnexAdapter from "./knexAdapter";
+import Knex from 'knex';
+import { knexConfig } from '../../config';
 
-export default class KnexWrapper {
-  public static getInstance(): KnexWrapper {
-    if (this.instance === undefined || this.instance === null) {
-      this.instance = new KnexWrapper();
-    }
-
-    return this.instance;
-  }
-
-  private static instance : KnexWrapper;
-  public knex : Knex;
-  
-  private constructor() {
-    this.knex = KnexAdapter.setUp();
+/**
+ * Wraps an instance of knex with the config to allow a single call to provide the
+ * necessary information.
+ */
+export class KnexWrapper {
+  public static getKnex(): Knex {
+    return Knex({
+      client: 'pg',
+      connection: knexConfig,
+      pool: { min: 0, max: 7 }
+    });
   }
 }
