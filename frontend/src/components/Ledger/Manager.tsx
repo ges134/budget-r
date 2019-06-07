@@ -9,6 +9,7 @@ import { IAsync, AxiosWrapper, verbs, LedgerHelper } from '../../lib';
 
 interface IProps {
   budgetID: number;
+  onLedgerUpdate?: (info: IManagerExchange) => void;
 }
 
 interface IState extends IAsync {
@@ -16,6 +17,11 @@ interface IState extends IAsync {
   errorMessage: string;
   ledgers: Ledger[];
   selectedLedger?: Ledger;
+}
+
+export interface IManagerExchange {
+  hasLedgers: boolean;
+  isEditing: boolean;
 }
 
 export class Manager extends Component<IProps, IState> {
@@ -42,6 +48,15 @@ export class Manager extends Component<IProps, IState> {
         this.setState({
           ledgers
         });
+        if (this.props.onLedgerUpdate) {
+          const info: IManagerExchange = {
+            hasLedgers: this.state.ledgers.length > 0,
+            isEditing:
+              this.state.selectedLedger !== undefined &&
+              this.state.selectedLedger !== null
+          };
+          this.props.onLedgerUpdate(info);
+        }
       })
       .catch(err => {
         this.setState({
@@ -54,12 +69,14 @@ export class Manager extends Component<IProps, IState> {
   };
 
   public onLedgersClick = (event: MouseEvent<HTMLElement>, key: number) => {
-    const selectedLedger = this.state.ledgers.filter(
-      ledger => ledger.id === key
-    )[0];
-    this.setState({
-      selectedLedger
-    });
+    if (!this.state.selectedLedger) {
+      const selectedLedger = this.state.ledgers.filter(
+        ledger => ledger.id === key
+      )[0];
+      this.setState({
+        selectedLedger
+      });
+    }
   };
 
   public componentDidMount() {
