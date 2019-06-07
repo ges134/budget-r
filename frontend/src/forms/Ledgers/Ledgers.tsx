@@ -55,7 +55,7 @@ export class Ledgers extends Component<IProps> {
         validationSchema={ledger.validationSchema}
         submitText="Create"
         submitUrl="/ledgers"
-        verb={verbs.put}
+        verb={this.props.initialLedger ? verbs.post : verbs.put}
         formIsReturnigId
         onSuccess={this.props.onSuccess}
       >
