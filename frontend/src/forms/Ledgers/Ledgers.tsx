@@ -9,6 +9,7 @@ interface IProps {
   budgetID: number;
   ledgers?: Readonly[];
   onSuccess: (res: any) => void;
+  initialLedger?: Ledger;
 }
 
 export class Ledgers extends Component<IProps> {
@@ -45,7 +46,8 @@ export class Ledgers extends Component<IProps> {
   };
 
   public render() {
-    const ledger = new Ledger('', this.props.budgetID);
+    const ledger =
+      this.props.initialLedger || new Ledger('', this.props.budgetID);
 
     return (
       <FormikFormWrapper

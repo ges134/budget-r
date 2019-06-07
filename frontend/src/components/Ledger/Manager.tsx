@@ -5,7 +5,13 @@ import { LedgerForm } from '../../forms';
 import { CardWrapper } from '../CardWrapper';
 import { TreeSet } from '..';
 import { Ledger } from '../../lib/models/presentations/readonly';
-import { IAsync, AxiosWrapper, verbs, LedgerHelper } from '../../lib';
+import {
+  IAsync,
+  AxiosWrapper,
+  verbs,
+  LedgerHelper,
+  Ledger as Presentation
+} from '../../lib';
 
 interface IProps {
   budgetID: number;
@@ -88,6 +94,11 @@ export class Manager extends Component<IProps, IState> {
   }
 
   public render() {
+    let ledger: Presentation | undefined;
+    if (this.state.selectedLedger) {
+      const { name, parentLedgerID, budgetID } = this.state.selectedLedger;
+      ledger = new Presentation(name, budgetID, parentLedgerID);
+    }
     return this.state.isFetching ? (
       <Fetching />
     ) : this.state.errorMessage.length > 0 ? (
@@ -100,6 +111,7 @@ export class Manager extends Component<IProps, IState> {
               budgetID={this.props.budgetID}
               ledgers={this.state.ledgers}
               onSuccess={this.onSuccess}
+              initialLedger={ledger}
             />
           </Col>
           <Col md={4} className="d-flex align-item-stretch card-button">
