@@ -22,7 +22,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/lodash": "^4.14.123",
     "@types/yup": "^0.26.12",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "class-validator": "^0.9.1",
     "cors": "^2.8.5",
